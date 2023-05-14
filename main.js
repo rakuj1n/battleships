@@ -1,4 +1,7 @@
 //pseudo code
+// ship types: 5 - carrier || 4 - battleship || 3.1 - cruiser || 3.0 - submarine || 2 - destroyer
+// total 5 ships 
+
 // enemy AI board values are negative || play board values are positive
 // initial board value is 0
 // each battleship type has different value e.g. 2-tile battleship has value of (-)2, 3-tile has (-)3 etc
@@ -15,3 +18,24 @@
     // use {while} to determine if off-board placement, if so, re-random a startingplacepoint
     // if no off-board placement until all respective # tiles for battleship type has been placed, move to next battleship type to place
     // loop until all battleships have been placed
+
+//start game screen explaining rules?
+//next screen 
+    // -> initialise Ai placement of ships
+    // -> player placement screen
+        // player name field
+        // list of ships and tile value that play can press and toggle through current selection
+        // toggle for player to toggle vertical horizontal placement for current selected ship
+        // when placed, ship placed is removed frmo list of ships
+        // clicked tile is the pivotstarttile, will highlight the adjacent tiles as player hovers around different tiles
+        // rmbr to code unplaceable tiles (values !== 0)
+
+// state variables
+    // enemy & player board ship death count
+
+
+//screens
+    //start screen
+    //player setup screen
+    //playing screen
+    //playing screen w/o controls once game over with a reset button
