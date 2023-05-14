@@ -39,3 +39,46 @@
     //player setup screen
     //playing screen
     //playing screen w/o controls once game over with a reset button
+
+
+/*----- constants -----*/
+
+
+/*----- state variables -----*/
+let game = {
+    turn: "",
+    screen: "setupscreen",
+    playboard: "",
+    enemyboard: "",
+}
+
+/*----- cached elements  -----*/
+let startScreen = document.querySelector("#startscreen")
+let setupScreen = document.querySelector("#playersetup")
+let gameScreen = document.querySelector("#game")
+let playButton = document.querySelector("#startbutton")
+
+/*----- event listeners -----*/
+
+
+/*----- functions -----*/
+function render() {
+    renderScreen()
+}
+function renderScreen() {
+    startScreen.classList.add("hide")
+    setupScreen.classList.add("hide")
+    gameScreen.classList.add("hide")
+
+    if (game.screen === "startscreen") {
+        startScreen.classList.remove("hide")
+    }
+    if (game.screen === "setupscreen") {
+        setupScreen.classList.remove("hide")
+    }
+    if (game.screen === "gamescreen") {
+        gameScreen.classList.remove("hide")
+    } 
+}
+
+render()

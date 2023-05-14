@@ -32,4 +32,8 @@ body {
     transform: scale(0.8);
     transition: transform 100ms ease-in;
     border-top-color: darkgrey;
-  }
+}
+
+.hide {
+    display: none;
+}
