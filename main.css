@@ -27,3 +27,9 @@ body {
     height: 35px;
     width: 35px;
 }
+
+.gridenemy > div:hover {
+    transform: scale(0.8);
+    transition: transform 100ms ease-in;
+    border-top-color: darkgrey;
+  }
