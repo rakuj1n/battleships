@@ -1,0 +1,29 @@
+body {
+    /* viewport units: vh (viewport height), vw, vmin (smallest between vh & vw) */
+    font-family: 'Open Sans', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.gridenemy, .gridplayer {
+    display: grid;
+    grid-template-columns: repeat(10,1fr);
+    grid-template-rows: repeat(10,1fr);
+    column-gap: 1px;
+    row-gap: 1px;
+}
+
+.gridenemy > div {
+    border: 2px solid;
+    height: 35px;
+    width: 35px;
+
+}
+
+.gridplayer > div {
+    border: 2px solid;
+    height: 35px;
+    width: 35px;
+}
