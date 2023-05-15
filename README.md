@@ -1,5 +1,6 @@
 # Battleships
 battleships project for GA SEI-44 project 1 (WIP). <br/>
+Who will emerge victorious in the dangerous waters of naval combat? <br/>
 Battleships is a game played on a 10x10 square grid.
 Place 5 ships of differing length onto the square grid. This is 'your waters'.
 The computer will do the same on their grid. This is the 'enemy's waters'.
@@ -12,7 +13,7 @@ Whoever sinks all of their opponent's ships first will be the winner.
 Images of your actual game
 
 # Technologies Used
-List of the technologies used, e.g., JavaScript, HTML, CSS...
+HTML, CSS and Javascript
 
 # Getting Started
 In this section include the link to your deployed game and any instructions you deem important.
