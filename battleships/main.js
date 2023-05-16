@@ -42,6 +42,13 @@
 
 
 /*----- constants -----*/
+// let SHIP_TYPE = {
+//     destroyer: 2,
+//     submarine: 3,
+//     cruiser: 3,
+//     battleship: 4,
+//     carrier: 5,
+// }
 
 
 /*----- state variables -----*/
@@ -51,6 +58,10 @@ let game = {
   playboard: "",
   enemyboard: "",
 }
+// let shipToBePlaced = {
+//     shipSize: 0
+// }
+
 
 /*----- cached elements  -----*/
 let startScreen = document.querySelector("#startscreen")
@@ -62,6 +73,33 @@ let playButton = document.querySelector("#startbutton")
 
 
 /*----- functions -----*/
+function init() {
+    createBoard("#gridsetup")
+    createBoard("#gridenemy")
+    createBoard("#gridplayer")
+}
+
+// function showShipPlacement(index) {
+
+// }
+
+// function setShipTypeToBePlaced(shipId) {
+//     shipToBePlaced.shipSize = 0//to insert shipsize
+// }
+
+function createBoard(gridId) {
+    for (let row = 0; row < 10; row++) {
+        let rowId = `r`+ row
+        for (let col = 0; col < 10; col++) {
+            let id = rowId + `c` + col
+            let div = document.createElement("div")
+            div.setAttribute("id",id)
+            let grid = document.querySelector(gridId)
+            grid.append(div)
+        }
+    }
+}
+
 function render() {
   renderScreen()
 }
@@ -84,3 +122,4 @@ function renderScreen() {
 // when refactoring after project finish: make a createboard function with arguments 
 // "appendlocation" and place in init() and remove the boards in html
 render()
+init()
