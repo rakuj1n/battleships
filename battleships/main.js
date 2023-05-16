@@ -46,10 +46,10 @@
 
 /*----- state variables -----*/
 let game = {
-    turn: "",
-    screen: "setupscreen",
-    playboard: "",
-    enemyboard: "",
+  turn: "",
+  screen: "gamescreen", //startscreen, setupscreen, gamescreen
+  playboard: "",
+  enemyboard: "",
 }
 
 /*----- cached elements  -----*/
@@ -63,22 +63,22 @@ let playButton = document.querySelector("#startbutton")
 
 /*----- functions -----*/
 function render() {
-    renderScreen()
+  renderScreen()
 }
 function renderScreen() {
-    startScreen.classList.add("hide")
-    setupScreen.classList.add("hide")
-    gameScreen.classList.add("hide")
+  startScreen.classList.add("hide")
+  setupScreen.classList.add("hide")
+  gameScreen.classList.add("hide")
 
-    if (game.screen === "startscreen") {
-        startScreen.classList.remove("hide")
-    }
-    if (game.screen === "setupscreen") {
-        setupScreen.classList.remove("hide")
-    }
-    if (game.screen === "gamescreen") {
-        gameScreen.classList.remove("hide")
-    } 
+  if (game.screen === "startscreen") {
+      startScreen.classList.remove("hide")
+  }
+  if (game.screen === "setupscreen") {
+      setupScreen.classList.remove("hide")
+  }
+  if (game.screen === "gamescreen") {
+      gameScreen.classList.remove("hide")
+  } 
 }
 
 render()
