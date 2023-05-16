@@ -47,7 +47,7 @@
 /*----- state variables -----*/
 let game = {
   turn: "",
-  screen: "gamescreen", //startscreen, setupscreen, gamescreen
+  screen: "setupscreen", //startscreen, setupscreen, gamescreen
   playboard: "",
   enemyboard: "",
 }
@@ -81,4 +81,6 @@ function renderScreen() {
   } 
 }
 
+// when refactoring after project finish: make a createboard function with arguments 
+// "appendlocation" and place in init() and remove the boards in html
 render()
