@@ -131,7 +131,8 @@ function aiPlaceShip(shipType) {
     let randomOrientation;
     randomNumOrientation === 0 ? randomOrientation = "v" : randomOrientation = "h"
     placeShip(randomNumRow,randomNumCol,randomOrientation,shipType,"enemyBoard")
-    if (game["enemyBoard"][randomNumRow][randomNumCol] === 0) {aiPlaceShip(shipType)}
+    //if current ship placed crosses with another ship
+    if (game["enemyBoard"][randomNumRow][randomNumCol] != SHIP_TYPE_SIZES[shipType] *-1) {aiPlaceShip(shipType)}
 }
 
 function placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,board) {
@@ -140,7 +141,8 @@ function placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,board) {
     //board = "enemyBoard" "playerBoard" setupBoard will modify playerBoard object too
     //tilePlacedRow = 0, tilePlacedCol = 0 etc
     //orientation = "v" "h"
-
+    //check if inital tile is already occupied
+    if (game[board][tilePlacedRow][tilePlacedCol] != 0) {return console.log("There is a ship in the way. Please choose another location.")}
     //places starting tile of ship and changes state board to - value if enemy, + value if player * ship number to denote type of ship on board
     game[board][tilePlacedRow][tilePlacedCol] = shipSize * (board === "enemyBoard" ? -1 : 1)
     if (board === "enemyBoard") {enemy[shipType] = []}
