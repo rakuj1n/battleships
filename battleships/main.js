@@ -49,12 +49,27 @@ let SHIP_TYPE_SIZES = {
     battleship: 4,
     carrier: 5,
 }
+let SHIP_VALUES = {
+    destroyer: 2,
+    submarine: 3.5,
+    cruiser: 3,
+    battleship: 4,
+    carrier: 5,
+}
+
+let SHIP_TYPE_INDICATOR = {
+    destroyer: "#EFECCA",
+    submarine: "#A9CBB7",
+    cruiser: "#F7FF58",
+    battleship: "#FF934F",
+    carrier: "#5E565A",
+}
 
 
 /*----- state variables -----*/
 let game = {
   turn: "",
-  screen: "startscreen", //startscreen, setupscreen, gamescreen
+  screen: "gamescreen", //startscreen, setupscreen, gamescreen
   enemyBoard: [
     [0,0,0,0,0,0,0,0,0,0], //r0 c0-c9
     [0,0,0,0,0,0,0,0,0,0], //r1 c0-c9
@@ -132,7 +147,7 @@ function aiPlaceShip(shipType) {
     randomNumOrientation === 0 ? randomOrientation = "v" : randomOrientation = "h"
     placeShip(randomNumRow,randomNumCol,randomOrientation,shipType,"enemyBoard")
     //if current ship placed crosses with another ship
-    if (game["enemyBoard"][randomNumRow][randomNumCol] != SHIP_TYPE_SIZES[shipType] *-1) {aiPlaceShip(shipType)}
+    if (game["enemyBoard"][randomNumRow][randomNumCol] != SHIP_VALUES[shipType] *-1) {aiPlaceShip(shipType)}
 }
 
 function placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,board) {
@@ -144,7 +159,7 @@ function placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,board) {
     //check if inital tile is already occupied
     if (game[board][tilePlacedRow][tilePlacedCol] != 0) {return console.log("There is a ship in the way. Please choose another location.")}
     //places starting tile of ship and changes state board to - value if enemy, + value if player * ship number to denote type of ship on board
-    game[board][tilePlacedRow][tilePlacedCol] = shipSize * (board === "enemyBoard" ? -1 : 1)
+    game[board][tilePlacedRow][tilePlacedCol] = SHIP_VALUES[shipType] * (board === "enemyBoard" ? -1 : 1)
     if (board === "enemyBoard") {enemy[shipType] = []}
     if (board === "playerBoard") {player[shipType] = []}
     //starting from game[board][i][j], set same value in downwards vertical for shipSizeth times
@@ -162,11 +177,11 @@ function placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,board) {
                 return console.log("There is a ship in the way. Please choose another location.")
             }
         }
-        //creates ship in enemy object
+        //creates ship in object
         if (board === "enemyBoard") {enemy[shipType].push([tilePlacedRow,tilePlacedCol])}
         if (board === "playerBoard") {player[shipType].push([tilePlacedRow,tilePlacedCol])}
         for (let numTiles = 1; numTiles < shipSize; numTiles++) {
-            game[board][tilePlacedRow+numTiles][tilePlacedCol] = shipSize * (board === "enemyBoard" ? -1 : 1)
+            game[board][tilePlacedRow+numTiles][tilePlacedCol] = SHIP_VALUES[shipType] * (board === "enemyBoard" ? -1 : 1)
             if (board === "enemyBoard") {enemy[shipType].push([tilePlacedRow+numTiles,tilePlacedCol])}
             if (board === "playerBoard") {player[shipType].push([tilePlacedRow+numTiles,tilePlacedCol])}
 
@@ -189,7 +204,7 @@ function placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,board) {
         if (board === "enemyBoard") {enemy[shipType].push([tilePlacedRow,tilePlacedCol])}
         if (board === "playerBoard") {player[shipType].push([tilePlacedRow,tilePlacedCol])}
         for (let numTiles = 1; numTiles < shipSize; numTiles++) {
-            game[board][tilePlacedRow][tilePlacedCol+numTiles] = shipSize * (board === "enemyBoard" ? -1 : 1)
+            game[board][tilePlacedRow][tilePlacedCol+numTiles] = SHIP_VALUES[shipType] * (board === "enemyBoard" ? -1 : 1)
             if (board === "enemyBoard") {enemy[shipType].push([tilePlacedRow,tilePlacedCol+numTiles])}
             if (board === "playerBoard") {player[shipType].push([tilePlacedRow,tilePlacedCol+numTiles])}
         }
@@ -216,6 +231,21 @@ function renderScreen() {
   if (game.screen === "gamescreen") {
       gameScreen.classList.remove("hide")
   } 
+}
+
+function renderBoard(board) { // "playerBoard"
+    let multiplier;
+    if (board === "playerBoard") {multiplier = 1}
+    if (board === "enemyBoard") {multiplier = -1}
+    for (let row of game[board]) {
+        for (let col of game[board] ) {
+            let idxValue = game[board[row][col]]
+            let shipType = 
+            if (game[board[row][col]] === 4*multiplier) {
+                document.querySelector(`#r${row}c${col}`).style.backgroundColor = SHIP_TYPE_INDICATOR[shipType]// ""
+            }
+        }
+    }
 }
 
 // when refactoring after project finish: make a createboard function with arguments 
