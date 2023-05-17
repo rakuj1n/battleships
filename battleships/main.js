@@ -99,6 +99,11 @@ function init() {
     createBoard("#gridsetup")
     createBoard("#gridenemy")
     createBoard("#gridplayer")
+    aiPlaceShip("destroyer")
+    aiPlaceShip("submarine")
+    aiPlaceShip("cruiser")
+    aiPlaceShip("battleship")
+    aiPlaceShip("carrier")
     render()
 }
 
@@ -115,6 +120,16 @@ function createBoard(gridId) {
             grid.append(div)
         }
     }
+}
+
+function aiPlaceShip(shipType) {
+    //randomise tilePlacedRow, tilePlacedCol,orientation
+    let randomNumRow = Math.floor(Math.random() * 10)
+    let randomNumCol = Math.floor(Math.random() * 10)
+    let randomNumOrientation = Math.floor(Math.random() * 2)
+    let randomOrientation;
+    randomNumOrientation === 0 ? randomOrientation = "v" : randomOrientation = "h"
+    placeShip(randomNumRow,randomNumCol,randomOrientation,shipType,"enemyBoard")
 }
 
 function placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,board) {
