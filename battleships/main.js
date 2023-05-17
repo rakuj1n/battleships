@@ -132,10 +132,10 @@ let game = {
 let enemy = {} //stores ship type as key and its indexes on gameboard as values in array
 let player = {}
 
-let setupCurrSelectedShip = "" // "destroyer", "cruiser" etc
+let setupCurrSelectedShip = "destroyer" // "destroyer", "cruiser" etc
 let setupOrientation = "v" // v or h
 
-
+let availableShipTypesToPlace = ["destroyer","submarine","cruiser","battleship","carrier"]
 
 /*----- cached elements  -----*/
 let startScreen = document.querySelector("#startscreen")
@@ -210,8 +210,15 @@ function handlePlaceShip(e) {
     let orientation = setupOrientation
     let shipType = setupCurrSelectedShip
     placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,"setupBoard")
+    if (game.setupBoard[tilePlacedRow][tilePlacedCol] != 0) {
+        let index = availableShipTypesToPlace.findIndex((ship)=>ship === shipType)
+        console.log(index)
+        index != -1 ? availableShipTypesToPlace.splice(index,1) : console.log("null")
+        console.log(availableShipTypesToPlace)
+    }
     render()
     console.log(game)
+    console.log(player)
 }
 
 function aiPlaceShip(shipType) {
@@ -237,7 +244,7 @@ function placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,board) {
     //places starting tile of ship and changes state board to - value if enemy, + value if player * ship number to denote type of ship on board
     game[board][tilePlacedRow][tilePlacedCol] = SHIP_VALUES[shipType] * (board === "enemyBoard" ? -1 : 1)
     if (board === "enemyBoard") {enemy[shipType] = []}
-    if (board === "playerBoard") {player[shipType] = []}
+    if (board === "setupBoard") {player[shipType] = []}
     //starting from game[board][i][j], set same value in downwards vertical for shipSizeth times
     if (orientation === "v") { 
         //check for out of board
@@ -255,11 +262,11 @@ function placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,board) {
         }
         //creates ship in object
         if (board === "enemyBoard") {enemy[shipType].push([tilePlacedRow,tilePlacedCol])}
-        if (board === "playerBoard") {player[shipType].push([tilePlacedRow,tilePlacedCol])}
+        if (board === "setupBoard") {player[shipType].push([tilePlacedRow,tilePlacedCol])}
         for (let numTiles = 1; numTiles < shipSize; numTiles++) {
             game[board][tilePlacedRow+numTiles][tilePlacedCol] = SHIP_VALUES[shipType] * (board === "enemyBoard" ? -1 : 1)
             if (board === "enemyBoard") {enemy[shipType].push([tilePlacedRow+numTiles,tilePlacedCol])}
-            if (board === "playerBoard") {player[shipType].push([tilePlacedRow+numTiles,tilePlacedCol])}
+            if (board === "setupBoard") {player[shipType].push([tilePlacedRow+numTiles,tilePlacedCol])}
 
         }
     }
@@ -278,11 +285,11 @@ function placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,board) {
             }
         }
         if (board === "enemyBoard") {enemy[shipType].push([tilePlacedRow,tilePlacedCol])}
-        if (board === "playerBoard") {player[shipType].push([tilePlacedRow,tilePlacedCol])}
+        if (board === "setupBoard") {player[shipType].push([tilePlacedRow,tilePlacedCol])}
         for (let numTiles = 1; numTiles < shipSize; numTiles++) {
             game[board][tilePlacedRow][tilePlacedCol+numTiles] = SHIP_VALUES[shipType] * (board === "enemyBoard" ? -1 : 1)
             if (board === "enemyBoard") {enemy[shipType].push([tilePlacedRow,tilePlacedCol+numTiles])}
-            if (board === "playerBoard") {player[shipType].push([tilePlacedRow,tilePlacedCol+numTiles])}
+            if (board === "setupBoard") {player[shipType].push([tilePlacedRow,tilePlacedCol+numTiles])}
         }
     }
 }
@@ -360,12 +367,25 @@ function rendersetupCurrSelectedShip() {
     setupCruiserButton.style.backgroundColor = ""
     setupBattleshipButton.style.backgroundColor = ""
     setupCarrierButton.style.backgroundColor = ""
+
+    setupDestroyerButton.classList.add("hide")
+    setupSubmarineButton.classList.add("hide")
+    setupCruiserButton.classList.add("hide")
+    setupBattleshipButton.classList.add("hide")
+    setupCarrierButton.classList.add("hide")
     
     if (setupCurrSelectedShip === "destroyer") {setupDestroyerButton.style.backgroundColor = "#FDFD96"}
     if (setupCurrSelectedShip === "submarine") {setupSubmarineButton.style.backgroundColor = "#FDFD96"}
     if (setupCurrSelectedShip === "cruiser") {setupCruiserButton.style.backgroundColor = "#FDFD96"}
     if (setupCurrSelectedShip === "battleship") {setupBattleshipButton.style.backgroundColor = "#FDFD96"}
     if (setupCurrSelectedShip === "carrier") {setupCarrierButton.style.backgroundColor = "#FDFD96"}
+    
+    //remove hide if exist in array
+    if (availableShipTypesToPlace.includes("destroyer")) {setupDestroyerButton.classList.remove("hide")}
+    if (availableShipTypesToPlace.includes("submarine")) {setupSubmarineButton.classList.remove("hide")}
+    if (availableShipTypesToPlace.includes("cruiser")) {setupCruiserButton.classList.remove("hide")}
+    if (availableShipTypesToPlace.includes("battleship")) {setupBattleshipButton.classList.remove("hide")}
+    if (availableShipTypesToPlace.includes("carrier")) {setupCarrierButton.classList.remove("hide")}
 }
 
 // when refactoring after project finish: make a createboard function with arguments 
