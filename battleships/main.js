@@ -57,12 +57,18 @@ let SHIP_VALUES = {
     carrier: 5,
 }
 
-let SHIP_TYPE_INDICATOR = {
-    destroyer: "#EFECCA",
-    submarine: "#A9CBB7",
-    cruiser: "#F7FF58",
-    battleship: "#FF934F",
-    carrier: "#5E565A",
+let CELL_INDICATOR = {
+    "0": "",
+    "2": "#EFECCA",
+    "3.5": "#A9CBB7",
+    "3": "#F7FF58",
+    "4": "#FF934F",
+    "5": "#5E565A",
+    "-2": "#EFECCA",
+    "-3.5": "#A9CBB7",
+    "-3": "#F7FF58",
+    "-4": "#FF934F",
+    "-5": "#5E565A",
 }
 
 
@@ -215,6 +221,7 @@ function placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,board) {
 // render functions
 function render() {
   renderScreen()
+  renderBoard("enemy")
 }
 
 function renderScreen() {
@@ -233,21 +240,14 @@ function renderScreen() {
   } 
 }
 
-function renderBoard(board) { // "playerBoard"
-    let multiplier;
-    if (board === "playerBoard") {multiplier = 1}
-    if (board === "enemyBoard") {multiplier = -1}
-    for (let row of game[board]) {
-        for (let col of game[board] ) {
-            let idxValue = game[board[row][col]]
-            let shipType = 
-            if (game[board[row][col]] === 4*multiplier) {
-                document.querySelector(`#r${row}c${col}`).style.backgroundColor = SHIP_TYPE_INDICATOR[shipType]// ""
-            }
+function renderBoard(board) { // "player"
+    for (let row = 0;row < game[`${board}Board`].length; row++) {
+        for (let col = 0;col<game[`${board}Board`][0].length;col++ ) {
+                document.querySelector(`#grid${board}>#r${row}c${col}`).style.backgroundColor = CELL_INDICATOR[`${game[`${board}Board`][row][col]}`]
         }
     }
 }
-
+// "#gridenemy>#r0c0"
 // when refactoring after project finish: make a createboard function with arguments 
 // "appendlocation" and place in init() and remove the boards in html
 
