@@ -42,25 +42,45 @@
 
 
 /*----- constants -----*/
-// let SHIP_TYPE = {
-//     destroyer: 2,
-//     submarine: 3,
-//     cruiser: 3,
-//     battleship: 4,
-//     carrier: 5,
-// }
+let SHIP_TYPE_SIZES = {
+    destroyer: 2,
+    submarine: 3,
+    cruiser: 3,
+    battleship: 4,
+    carrier: 5,
+}
 
 
 /*----- state variables -----*/
 let game = {
   turn: "",
   screen: "setupscreen", //startscreen, setupscreen, gamescreen
-  playboard: "",
-  enemyboard: "",
+  enemyBoard: [
+    [0,0,0,0,0,0,0,0,0,0] //r0 c0-c9
+    [0,0,0,0,0,0,0,0,0,0] //r1 c0-c9
+    [0,0,0,0,0,0,0,0,0,0] //r2 c0-c9
+    [0,0,0,0,0,0,0,0,0,0] //r3 c0-c9
+    [0,0,0,0,0,0,0,0,0,0] //r4 c0-c9
+    [0,0,0,0,0,0,0,0,0,0] //r5 c0-c9
+    [0,0,0,0,0,0,0,0,0,0] //r6 c0-c9
+    [0,0,0,0,0,0,0,0,0,0] //r7 c0-c9
+    [0,0,0,0,0,0,0,0,0,0] //r8 c0-c9
+    [0,0,0,0,0,0,0,0,0,0] //r9 c0-c9
+  ],
+  playerBoard: [
+    [0,0,0,0,0,0,0,0,0,0] //r0 c0-c9
+    [0,0,0,0,0,0,0,0,0,0] //r1 c0-c9
+    [0,0,0,0,0,0,0,0,0,0] //r2 c0-c9
+    [0,0,0,0,0,0,0,0,0,0] //r3 c0-c9
+    [0,0,0,0,0,0,0,0,0,0] //r4 c0-c9
+    [0,0,0,0,0,0,0,0,0,0] //r5 c0-c9
+    [0,0,0,0,0,0,0,0,0,0] //r6 c0-c9
+    [0,0,0,0,0,0,0,0,0,0] //r7 c0-c9
+    [0,0,0,0,0,0,0,0,0,0] //r8 c0-c9
+    [0,0,0,0,0,0,0,0,0,0] //r9 c0-c9
+  ],
 }
-// let shipToBePlaced = {
-//     shipSize: 0
-// }
+
 
 
 /*----- cached elements  -----*/
@@ -77,15 +97,10 @@ function init() {
     createBoard("#gridsetup")
     createBoard("#gridenemy")
     createBoard("#gridplayer")
+    render()
 }
 
-// function showShipPlacement(index) {
-
-// }
-
-// function setShipTypeToBePlaced(shipId) {
-//     shipToBePlaced.shipSize = 0//to insert shipsize
-// }
+// function showShipPlacement(index) 
 
 function createBoard(gridId) {
     for (let row = 0; row < 10; row++) {
@@ -100,9 +115,36 @@ function createBoard(gridId) {
     }
 }
 
+function placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,board) {
+    shipSize = SHIP_TYPE_SIZES[shipType] 
+    //shipType = "destroyer", "submarine" etc. (? currSelectedShipSize etc)
+    //board = "enemyBoard" "playerBoard" setupBoard will modify playerBoard object too
+    //tilePlacedRow = 0, tilePlacedCol = 0 etc
+    //orientation = "v" "h"
+    game[board][tilePlacedRow][tilePlacedCol] = shipSize * (board === "enemyBoard" ? -1 : 1)
+    if (orientation === "v") {
+        //starting from game[board][i][j], set same value in downwards vertical for shipSizeth times
+        for (let numTiles = 1; numTiles < shipSize; numTiles++) {
+            game[board][tilePlacedRow+numTiles][tilePlacedCol] = shipSize * (board === "enemyBoard" ? -1 : 1)
+        }
+    }
+    if (orientation === "h") {
+        for (let numTiles = 1; numTiles < shipSize; numTiles++) {
+            game[board][tilePlacedRow][tilePlacedCol+numTiles] = shipSize * (board === "enemyBoard" ? -1 : 1)
+        }
+    }
+}
+
+function checkValidPlacement() {
+    //to check valid placement from startingpointplacement of ships
+    
+}
+
+// render functions
 function render() {
   renderScreen()
 }
+
 function renderScreen() {
   startScreen.classList.add("hide")
   setupScreen.classList.add("hide")
@@ -121,5 +163,5 @@ function renderScreen() {
 
 // when refactoring after project finish: make a createboard function with arguments 
 // "appendlocation" and place in init() and remove the boards in html
-render()
+
 init()
