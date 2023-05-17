@@ -132,15 +132,28 @@ let game = {
 let enemy = {} //stores ship type as key and its indexes on gameboard as values in array
 let player = {}
 
+let setupCurrSelectedShip = "" // "destroyer", "cruiser" etc
+let setupOrientation = "" // v or h
+
+
 
 /*----- cached elements  -----*/
 let startScreen = document.querySelector("#startscreen")
 let setupScreen = document.querySelector("#playersetup")
 let gameScreen = document.querySelector("#game")
 let playButton = document.querySelector("#startbutton")
+let setupDestroyerButton = document.querySelector("#destroyer")
+let setupSubmarineButton = document.querySelector("#submarine")
+let setupCruiserButton = document.querySelector("#cruiser")
+let setupBattleshipButton = document.querySelector("#battleship")
+let setupCarrierButton = document.querySelector("#carrier")
 
 /*----- event listeners -----*/
-
+setupDestroyerButton.addEventListener("click",toggleDestroyer)
+setupSubmarineButton.addEventListener("click",toggleSubmarine)
+setupCruiserButton.addEventListener("click",toggleCruiser)
+setupBattleshipButton.addEventListener("click",toggleBattleship)
+setupCarrierButton.addEventListener("click",toggleCarrier)
 
 /*----- functions -----*/
 function init() {
@@ -156,6 +169,7 @@ function init() {
     console.log(game)
     console.log(enemy)
     console.log(player)
+    
 }
 
 function createBoard(gridId) {
@@ -244,6 +258,31 @@ function placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,board) {
     }
 }
 
+function toggleDestroyer() {
+    setupCurrSelectedShip = "destroyer"
+    console.log(setupCurrSelectedShip)
+    render()
+}
+function toggleSubmarine() {
+    setupCurrSelectedShip = "submarine"
+    console.log(setupCurrSelectedShip)
+    render()
+}
+function toggleCruiser() {
+    setupCurrSelectedShip = "cruiser"
+    console.log(setupCurrSelectedShip)
+    render()
+}
+function toggleBattleship() {
+    setupCurrSelectedShip = "battleship"
+    console.log(setupCurrSelectedShip)
+    render()
+}
+function toggleCarrier() {
+    setupCurrSelectedShip = "carrier"
+    console.log(setupCurrSelectedShip)
+    render()
+}
 
 // render functions
 function render() {
@@ -251,6 +290,7 @@ function render() {
   renderBoard("player")
   renderBoard("setup")
   renderBoard("enemy") //remove this later
+  rendersetupCurrSelectedShip()
 }
 
 function renderScreen() {
@@ -275,6 +315,20 @@ function renderBoard(board) { // "player"
                 document.querySelector(`#grid${board}>#r${row}c${col}`).style.backgroundColor = CELL_INDICATOR[`${game[`${board}Board`][row][col]}`]
         }
     }
+}
+
+function rendersetupCurrSelectedShip() {
+    setupDestroyerButton.style.backgroundColor = ""
+    setupSubmarineButton.style.backgroundColor = ""
+    setupCruiserButton.style.backgroundColor = ""
+    setupBattleshipButton.style.backgroundColor = ""
+    setupCarrierButton.style.backgroundColor = ""
+    
+    if (setupCurrSelectedShip === "destroyer") {setupDestroyerButton.style.backgroundColor = "#FDFD96"}
+    if (setupCurrSelectedShip === "submarine") {setupSubmarineButton.style.backgroundColor = "#FDFD96"}
+    if (setupCurrSelectedShip === "cruiser") {setupCruiserButton.style.backgroundColor = "#FDFD96"}
+    if (setupCurrSelectedShip === "battleship") {setupBattleshipButton.style.backgroundColor = "#FDFD96"}
+    if (setupCurrSelectedShip === "carrier") {setupCarrierButton.style.backgroundColor = "#FDFD96"}
 }
 
 // when refactoring after project finish: make a createboard function with arguments 
