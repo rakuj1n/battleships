@@ -58,17 +58,32 @@ let SHIP_VALUES = {
 }
 
 let CELL_INDICATOR = {
+    //null
     "0": "",
+    //player ships
     "2": "#EFECCA",
     "3.5": "#A9CBB7",
     "3": "#F7FF58",
     "4": "#FF934F",
     "5": "#5E565A",
+    //player got hit
+    "12": "#FF0000",
+    "13.5": "#FF0000",
+    "13": "#FF0000",
+    "14": "#FF0000",
+    "15": "#FF0000",
+    //enemy ships
     "-2": "#EFECCA",
     "-3.5": "#A9CBB7",
     "-3": "#F7FF58",
     "-4": "#FF934F",
     "-5": "#5E565A",
+    //enemy got hit
+    "-12": "#FF0000",
+    "-13.5": "#FF0000",
+    "-13": "#FF0000",
+    "-14": "#FF0000",
+    "-15": "#FF0000",
 }
 
 
@@ -221,7 +236,8 @@ function placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,board) {
 // render functions
 function render() {
   renderScreen()
-  renderBoard("enemy")
+  renderBoard("player")
+  renderBoard("enemy") //remove this later
 }
 
 function renderScreen() {
@@ -247,7 +263,7 @@ function renderBoard(board) { // "player"
         }
     }
 }
-// "#gridenemy>#r0c0"
+
 // when refactoring after project finish: make a createboard function with arguments 
 // "appendlocation" and place in init() and remove the boards in html
 
