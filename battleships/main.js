@@ -54,29 +54,29 @@ let SHIP_TYPE_SIZES = {
 /*----- state variables -----*/
 let game = {
   turn: "",
-  screen: "setupscreen", //startscreen, setupscreen, gamescreen
+  screen: "startscreen", //startscreen, setupscreen, gamescreen
   enemyBoard: [
-    [0,0,0,0,0,0,0,0,0,0] //r0 c0-c9
-    [0,0,0,0,0,0,0,0,0,0] //r1 c0-c9
-    [0,0,0,0,0,0,0,0,0,0] //r2 c0-c9
-    [0,0,0,0,0,0,0,0,0,0] //r3 c0-c9
-    [0,0,0,0,0,0,0,0,0,0] //r4 c0-c9
-    [0,0,0,0,0,0,0,0,0,0] //r5 c0-c9
-    [0,0,0,0,0,0,0,0,0,0] //r6 c0-c9
-    [0,0,0,0,0,0,0,0,0,0] //r7 c0-c9
-    [0,0,0,0,0,0,0,0,0,0] //r8 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r0 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r1 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r2 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r3 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r4 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r5 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r6 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r7 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r8 c0-c9
     [0,0,0,0,0,0,0,0,0,0] //r9 c0-c9
   ],
   playerBoard: [
-    [0,0,0,0,0,0,0,0,0,0] //r0 c0-c9
-    [0,0,0,0,0,0,0,0,0,0] //r1 c0-c9
-    [0,0,0,0,0,0,0,0,0,0] //r2 c0-c9
-    [0,0,0,0,0,0,0,0,0,0] //r3 c0-c9
-    [0,0,0,0,0,0,0,0,0,0] //r4 c0-c9
-    [0,0,0,0,0,0,0,0,0,0] //r5 c0-c9
-    [0,0,0,0,0,0,0,0,0,0] //r6 c0-c9
-    [0,0,0,0,0,0,0,0,0,0] //r7 c0-c9
-    [0,0,0,0,0,0,0,0,0,0] //r8 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r0 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r1 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r2 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r3 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r4 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r5 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r6 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r7 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r8 c0-c9
     [0,0,0,0,0,0,0,0,0,0] //r9 c0-c9
   ],
 }
@@ -105,9 +105,10 @@ function init() {
     aiPlaceShip("battleship")
     aiPlaceShip("carrier")
     render()
+    console.log(game)
+    console.log(enemy)
+    console.log(player)
 }
-
-// function showShipPlacement(index) 
 
 function createBoard(gridId) {
     for (let row = 0; row < 10; row++) {
@@ -130,10 +131,11 @@ function aiPlaceShip(shipType) {
     let randomOrientation;
     randomNumOrientation === 0 ? randomOrientation = "v" : randomOrientation = "h"
     placeShip(randomNumRow,randomNumCol,randomOrientation,shipType,"enemyBoard")
+    if (game["enemyBoard"][randomNumRow][randomNumCol] === 0) {aiPlaceShip(shipType)}
 }
 
 function placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,board) {
-    shipSize = SHIP_TYPE_SIZES[shipType] 
+    let shipSize = SHIP_TYPE_SIZES[shipType] 
     //shipType = "destroyer", "submarine" etc. (? currSelectedShipSize etc)
     //board = "enemyBoard" "playerBoard" setupBoard will modify playerBoard object too
     //tilePlacedRow = 0, tilePlacedCol = 0 etc
@@ -141,39 +143,53 @@ function placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,board) {
 
     //places starting tile of ship and changes state board to - value if enemy, + value if player * ship number to denote type of ship on board
     game[board][tilePlacedRow][tilePlacedCol] = shipSize * (board === "enemyBoard" ? -1 : 1)
+    if (board === "enemyBoard") {enemy[shipType] = []}
+    if (board === "playerBoard") {player[shipType] = []}
     //starting from game[board][i][j], set same value in downwards vertical for shipSizeth times
     if (orientation === "v") { 
         //check for out of board
         let lastRowIndex = tilePlacedRow+shipSize-1
-        if (lastRowIndex > 9) {return console.log("Out of board. Please choose another location.")}
+        if (lastRowIndex > 9) {
+            game[board][tilePlacedRow][tilePlacedCol] = 0
+            return console.log("Out of board. Please choose another location.")
+        }
         //check for ships already placed
         for (let numTiles = 1; numTiles < shipSize; numTiles++) {
-            if (game[board][tilePlacedRow+numTiles][tilePlacedCol] != 0) {return console.log("There is a ship in the way. Please choose another location.")}
+            if (game[board][tilePlacedRow+numTiles][tilePlacedCol] != 0) {
+                game[board][tilePlacedRow][tilePlacedCol] = 0
+                return console.log("There is a ship in the way. Please choose another location.")
+            }
         }
         //creates ship in enemy object
-        let obj;
-        if (board === "enemyBoard") {obj = enemy}
-        if (board === "playerBoard") {obj = player}
-        obj[shipType] = []
+        if (board === "enemyBoard") {enemy[shipType].push([tilePlacedRow,tilePlacedCol])}
+        if (board === "playerBoard") {player[shipType].push([tilePlacedRow,tilePlacedCol])}
         for (let numTiles = 1; numTiles < shipSize; numTiles++) {
             game[board][tilePlacedRow+numTiles][tilePlacedCol] = shipSize * (board === "enemyBoard" ? -1 : 1)
-            obj[shipType].push([tilePlacedRow+numTiles,tilePlacedCol])
+            if (board === "enemyBoard") {enemy[shipType].push([tilePlacedRow+numTiles,tilePlacedCol])}
+            if (board === "playerBoard") {player[shipType].push([tilePlacedRow+numTiles,tilePlacedCol])}
+
         }
     }
     if (orientation === "h") {
+         //check for out of board
         let lastColIndex = tilePlacedCol+shipSize-1
-        if (lastColIndex > 9) {return console.log("Out of board. Please choose another location.")}
+        if (lastColIndex > 9) {
+            game[board][tilePlacedRow][tilePlacedCol] = 0
+            return console.log("Out of board. Please choose another location.")
+        }
         //check for ships already placed
         for (let numTiles = 1; numTiles < shipSize; numTiles++) {
-            if (game[board][tilePlacedRow][tilePlacedCol+numTiles] != 0) {return console.log("There is a ship in the way. Please choose another location.")}
+            if (game[board][tilePlacedRow][tilePlacedCol+numTiles] != 0) {
+                game[board][tilePlacedRow][tilePlacedCol] = 0
+                return console.log("There is a ship in the way. Please choose another location.")
+            }
         }
-        let obj;
-        if (board === "enemyBoard") {obj = enemy}
-        if (board === "playerBoard") {obj = player}
-        obj[shipType] = []
+        if (board === "enemyBoard") {enemy[shipType].push([tilePlacedRow,tilePlacedCol])}
+        if (board === "playerBoard") {player[shipType].push([tilePlacedRow,tilePlacedCol])}
         for (let numTiles = 1; numTiles < shipSize; numTiles++) {
             game[board][tilePlacedRow][tilePlacedCol+numTiles] = shipSize * (board === "enemyBoard" ? -1 : 1)
-            obj[shipType].push([tilePlacedRow,tilePlacedCol+numTiles])
+            if (board === "enemyBoard") {enemy[shipType].push([tilePlacedRow,tilePlacedCol+numTiles])}
+            if (board === "playerBoard") {player[shipType].push([tilePlacedRow,tilePlacedCol+numTiles])}
         }
     }
 }
