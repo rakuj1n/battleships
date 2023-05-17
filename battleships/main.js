@@ -133,7 +133,7 @@ let enemy = {} //stores ship type as key and its indexes on gameboard as values 
 let player = {}
 
 let setupCurrSelectedShip = "" // "destroyer", "cruiser" etc
-let setupOrientation = "" // v or h
+let setupOrientation = "v" // v or h
 
 
 
@@ -147,6 +147,7 @@ let setupSubmarineButton = document.querySelector("#submarine")
 let setupCruiserButton = document.querySelector("#cruiser")
 let setupBattleshipButton = document.querySelector("#battleship")
 let setupCarrierButton = document.querySelector("#carrier")
+let toggleOrientationButton = document.querySelector("#toggleOrientation")
 
 /*----- event listeners -----*/
 setupDestroyerButton.addEventListener("click",toggleDestroyer)
@@ -154,12 +155,15 @@ setupSubmarineButton.addEventListener("click",toggleSubmarine)
 setupCruiserButton.addEventListener("click",toggleCruiser)
 setupBattleshipButton.addEventListener("click",toggleBattleship)
 setupCarrierButton.addEventListener("click",toggleCarrier)
+toggleOrientationButton.addEventListener("click",toggleOrientation)
+
 
 /*----- functions -----*/
 function init() {
     createBoard("#gridsetup")
     createBoard("#gridenemy")
     createBoard("#gridplayer")
+    createSetupEventList()
     aiPlaceShip("destroyer")
     aiPlaceShip("submarine")
     aiPlaceShip("cruiser")
@@ -172,6 +176,7 @@ function init() {
     
 }
 
+
 function createBoard(gridId) {
     for (let row = 0; row < 10; row++) {
         let rowId = `r`+ row
@@ -183,6 +188,30 @@ function createBoard(gridId) {
             grid.append(div)
         }
     }
+}
+
+function toggleOrientation() {
+    if (toggleOrientationButton.innerText === "Vertical") {
+        setupOrientation = "h"
+        console.log(setupOrientation)
+        return toggleOrientationButton.innerText = "Horizontal"
+    }
+    if (toggleOrientationButton.innerText === "Horizontal") {
+        setupOrientation = "v"
+        console.log(setupOrientation)
+        return toggleOrientationButton.innerText = "Vertical"
+    }
+    
+}
+
+function handlePlaceShip(e) {
+    let tilePlacedRow = parseInt(e.target.id[1])
+    let tilePlacedCol = parseInt(e.target.id[3])
+    let orientation = setupOrientation
+    let shipType = setupCurrSelectedShip
+    placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,"setupBoard")
+    render()
+    console.log(game)
 }
 
 function aiPlaceShip(shipType) {
@@ -284,6 +313,14 @@ function toggleCarrier() {
     render()
 }
 
+function createSetupEventList() {
+    for (let row = 0;row < game.setupBoard.length; row++) {
+        for (let col = 0;col<game.setupBoard[0].length;col++ ) {
+                document.querySelector(`#gridsetup>#r${row}c${col}`).addEventListener("click",handlePlaceShip)
+        }
+    }
+}
+
 // render functions
 function render() {
   renderScreen()
@@ -335,3 +372,4 @@ function rendersetupCurrSelectedShip() {
 // "appendlocation" and place in init() and remove the boards in html
 
 init()
+
