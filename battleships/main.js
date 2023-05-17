@@ -210,11 +210,12 @@ function handlePlaceShip(e) {
     let orientation = setupOrientation
     let shipType = setupCurrSelectedShip
     placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,"setupBoard")
-    if (game.setupBoard[tilePlacedRow][tilePlacedCol] != 0) {
+    if (game.setupBoard[tilePlacedRow][tilePlacedCol] === SHIP_VALUES[shipType]) {
         let index = availableShipTypesToPlace.findIndex((ship)=>ship === shipType)
         console.log(index)
         index != -1 ? availableShipTypesToPlace.splice(index,1) : console.log("null")
         console.log(availableShipTypesToPlace)
+        setupCurrSelectedShip = availableShipTypesToPlace[0]
     }
     render()
     console.log(game)
