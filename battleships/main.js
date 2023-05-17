@@ -59,7 +59,7 @@ let SHIP_VALUES = {
 
 let CELL_INDICATOR = {
     //null
-    "0": "",
+    "0": "#FFFFFF",
     //player ships
     "2": "#EFECCA",
     "3.5": "#A9CBB7",
@@ -90,7 +90,19 @@ let CELL_INDICATOR = {
 /*----- state variables -----*/
 let game = {
   turn: "",
-  screen: "gamescreen", //startscreen, setupscreen, gamescreen
+  screen: "setupscreen", //startscreen, setupscreen, gamescreen
+  setupBoard:[
+    [0,0,0,0,0,0,0,0,0,0], //r0 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r1 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r2 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r3 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r4 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r5 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r6 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r7 c0-c9
+    [0,0,0,0,0,0,0,0,0,0], //r8 c0-c9
+    [0,0,0,0,0,0,0,0,0,0] //r9 c0-c9
+  ],
   enemyBoard: [
     [0,0,0,0,0,0,0,0,0,0], //r0 c0-c9
     [0,0,0,0,0,0,0,0,0,0], //r1 c0-c9
@@ -237,6 +249,7 @@ function placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,board) {
 function render() {
   renderScreen()
   renderBoard("player")
+  renderBoard("setup")
   renderBoard("enemy") //remove this later
 }
 
