@@ -81,6 +81,8 @@ let game = {
   ],
 }
 
+let enemy = {} //stores ship type as key and its indexes on gameboard as values in array
+let player = {}
 
 
 /*----- cached elements  -----*/
@@ -121,24 +123,46 @@ function placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,board) {
     //board = "enemyBoard" "playerBoard" setupBoard will modify playerBoard object too
     //tilePlacedRow = 0, tilePlacedCol = 0 etc
     //orientation = "v" "h"
+
+    //places starting tile of ship and changes state board to - value if enemy, + value if player * ship number to denote type of ship on board
     game[board][tilePlacedRow][tilePlacedCol] = shipSize * (board === "enemyBoard" ? -1 : 1)
-    if (orientation === "v") {
-        //starting from game[board][i][j], set same value in downwards vertical for shipSizeth times
+    //starting from game[board][i][j], set same value in downwards vertical for shipSizeth times
+    if (orientation === "v") { 
+        //check for out of board
+        let lastRowIndex = tilePlacedRow+shipSize-1
+        if (lastRowIndex > 9) {return console.log("Out of board. Please choose another location.")}
+        //check for ships already placed
+        for (let numTiles = 1; numTiles < shipSize; numTiles++) {
+            if (game[board][tilePlacedRow+numTiles][tilePlacedCol] != 0) {return console.log("There is a ship in the way. Please choose another location.")}
+        }
+        //creates ship in enemy object
+        let obj;
+        if (board === "enemyBoard") {obj = enemy}
+        if (board === "playerBoard") {obj = player}
+        obj[shipType] = []
         for (let numTiles = 1; numTiles < shipSize; numTiles++) {
             game[board][tilePlacedRow+numTiles][tilePlacedCol] = shipSize * (board === "enemyBoard" ? -1 : 1)
+            obj[shipType].push([tilePlacedRow+numTiles,tilePlacedCol])
         }
     }
     if (orientation === "h") {
+        let lastColIndex = tilePlacedCol+shipSize-1
+        if (lastColIndex > 9) {return console.log("Out of board. Please choose another location.")}
+        //check for ships already placed
+        for (let numTiles = 1; numTiles < shipSize; numTiles++) {
+            if (game[board][tilePlacedRow][tilePlacedCol+numTiles] != 0) {return console.log("There is a ship in the way. Please choose another location.")}
+        }
+        let obj;
+        if (board === "enemyBoard") {obj = enemy}
+        if (board === "playerBoard") {obj = player}
+        obj[shipType] = []
         for (let numTiles = 1; numTiles < shipSize; numTiles++) {
             game[board][tilePlacedRow][tilePlacedCol+numTiles] = shipSize * (board === "enemyBoard" ? -1 : 1)
+            obj[shipType].push([tilePlacedRow,tilePlacedCol+numTiles])
         }
     }
 }
 
-function checkValidPlacement() {
-    //to check valid placement from startingpointplacement of ships
-    
-}
 
 // render functions
 function render() {
