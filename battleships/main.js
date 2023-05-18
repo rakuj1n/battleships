@@ -13,7 +13,7 @@ let SHIP_VALUES = {
     battleship: 4,
     carrier: 5,
 }
-
+ 
 let CELL_INDICATOR = {
     //null
     "0": "#FFFFFF",
