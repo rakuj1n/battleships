@@ -137,6 +137,8 @@ let setupOrientation = "v" // v or h
 
 let availableShipTypesToPlace = ["destroyer","submarine","cruiser","battleship","carrier"]
 
+let setupErrorMessage = ""
+
 /*----- cached elements  -----*/
 let startScreen = document.querySelector("#startscreen")
 let setupScreen = document.querySelector("#playersetup")
@@ -149,6 +151,7 @@ let setupBattleshipButton = document.querySelector("#battleship")
 let setupCarrierButton = document.querySelector("#carrier")
 let toggleOrientationButton = document.querySelector("#toggleOrientation")
 let deployButton = document.querySelector("#deployButton")
+let setupErrorMessageField = document.querySelector("#errorMessage")
 
 /*----- event listeners -----*/
 setupDestroyerButton.addEventListener("click",toggleDestroyer)
@@ -233,6 +236,7 @@ function toggleOrientation() {
 }
 
 function handlePlaceShip(e) {
+    setupErrorMessage = ""
     if (availableShipTypesToPlace.length === 0) {return}
     let tilePlacedRow = parseInt(e.target.id[1])
     let tilePlacedCol = parseInt(e.target.id[3])
@@ -269,7 +273,10 @@ function placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,board) {
     //tilePlacedRow = 0, tilePlacedCol = 0 etc
     //orientation = "v" "h"
     //check if inital tile is already occupied
-    if (game[board][tilePlacedRow][tilePlacedCol] != 0) {return console.log("There is a ship in the way. Please choose another location.")}
+    if (game[board][tilePlacedRow][tilePlacedCol] != 0) {
+        setupErrorMessage = "There is a ship in the way. Please choose another location."
+        return console.log("There is a ship in the way. Please choose another location.")
+    }
     //places starting tile of ship and changes state board to - value if enemy, + value if player * ship number to denote type of ship on board
     game[board][tilePlacedRow][tilePlacedCol] = SHIP_VALUES[shipType] * (board === "enemyBoard" ? -1 : 1)
     if (board === "enemyBoard") {enemy[shipType] = []}
@@ -280,12 +287,14 @@ function placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,board) {
         let lastRowIndex = tilePlacedRow+shipSize-1
         if (lastRowIndex > 9) {
             game[board][tilePlacedRow][tilePlacedCol] = 0
+            setupErrorMessage = "Out of board. Please choose another location."
             return console.log("Out of board. Please choose another location.")
         }
         //check for ships already placed
         for (let numTiles = 1; numTiles < shipSize; numTiles++) {
             if (game[board][tilePlacedRow+numTiles][tilePlacedCol] != 0) {
                 game[board][tilePlacedRow][tilePlacedCol] = 0
+                setupErrorMessage = "There is a ship in the way. Please choose another location."
                 return console.log("There is a ship in the way. Please choose another location.")
             }
         }
@@ -304,12 +313,14 @@ function placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,board) {
         let lastColIndex = tilePlacedCol+shipSize-1
         if (lastColIndex > 9) {
             game[board][tilePlacedRow][tilePlacedCol] = 0
+            setupErrorMessage = "Out of board. Please choose another location."
             return console.log("Out of board. Please choose another location.")
         }
         //check for ships already placed
         for (let numTiles = 1; numTiles < shipSize; numTiles++) {
             if (game[board][tilePlacedRow][tilePlacedCol+numTiles] != 0) {
                 game[board][tilePlacedRow][tilePlacedCol] = 0
+                setupErrorMessage = "There is a ship in the way. Please choose another location."
                 return console.log("There is a ship in the way. Please choose another location.")
             }
         }
@@ -352,7 +363,13 @@ function toggleCarrier() {
 
 
 function handleToGame() {
+    if (availableShipTypesToPlace.length != 0) {
+        setupErrorMessage = "Not all ships have been placed."
+        return render()
+    }
     game.playerBoard = [...game.setupBoard]
+    console.log(game)
+    render()
 }
 
 // render functions
@@ -362,6 +379,7 @@ function render() {
   renderBoard("setup")
   renderBoard("enemy") //remove this later
   rendersetupCurrSelectedShip()
+  renderErrorMsg()
 }
 
 function renderScreen() {
@@ -421,6 +439,16 @@ function rendersetupCurrSelectedShip() {
     if (availableShipTypesToPlace.includes("carrier")) {setupCarrierButton.classList.remove("hide")}
 }
 
+function renderErrorMsg() {
+    setupErrorMessageField.innerText = ""
+    setupErrorMessageField.innerText = setupErrorMessage
+//     setTimeout(()=>{
+//         setupErrorMessage=""
+//         setupErrorMessageField.innerText = setupErrorMessage
+// },5000)
+}
+
+// real-time render
 function renderPlacementLens(e) {
     for (let row = 0;row < game[`setupBoard`].length; row++) {
         for (let col = 0;col<game[`setupBoard`][0].length;col++ ) {

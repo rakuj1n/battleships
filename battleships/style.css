@@ -57,3 +57,7 @@ body {
 .lenshover {
   filter: brightness(0.8); 
 }
+
+#gridsetup > #errorMessage {
+  width: 420px;
+}
