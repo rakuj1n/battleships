@@ -215,7 +215,8 @@ function handleAttack(e) {
     console.log("enemy game board", game)
     render()
 
-    setTimeout(aiAttack(),2000)
+    let randomTime = Math.floor(Math.random()*(2001-500)) +500
+    setTimeout(aiAttack,randomTime)
 }
 
 function aiAttack() {
@@ -511,12 +512,23 @@ function renderErrorMsg() {
 //         setupErrorMessageField.innerText = setupErrorMessage
 // },5000)
 }
-
+let timer;
 function renderTurn() {
-    document.querySelector("#game>h2").innerText = ""
+    document.querySelector("#game>h1").innerText = ""
 
-    if (game.turn === "enemy") {document.querySelector("#game>h2").innerText = "Enemy's turn"}
-    if (game.turn === "player") {document.querySelector("#game>h2").innerText = `${username}'s turn`}
+    let turnTimer = function() {
+        document.querySelector("#game>h1").innerText += "."
+    }
+
+    if (game.turn === "enemy") {
+        document.querySelector("#game>h1").innerText = "Enemy is launching an attack"
+        timer = setInterval(turnTimer,250)
+    }
+
+    if (game.turn === "player") {
+        clearInterval(timer)
+        document.querySelector("#game>h1").innerText = `${username}'s turn`
+    }
 }
 
 // real-time render

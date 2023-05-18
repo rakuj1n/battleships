@@ -62,6 +62,7 @@ body {
   max-width: 350px;
 }
 
-h2 {
+#game>h1 {
   color: #7C989F;
+  font-weight: 900;
 }
