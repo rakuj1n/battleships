@@ -51,7 +51,7 @@ let CELL_INDICATOR = {
 /*----- state variables -----*/
 let game = {
   turn: "player", //player, enemy
-  winner: null,
+  winner: null, //enemy, player
   screen: "", //startscreen, setupscreen, gamescreen
   setupBoard:[
     [0,0,0,0,0,0,0,0,0,0], //r0 c0-c9
@@ -213,6 +213,7 @@ function handleAttack(e) {
     game.turn = "enemy"
     console.log("enemy", enemy)
     console.log("enemy game board", game)
+    checkWin()
     render()
 
     let randomTime = Math.floor(Math.random()*(2501-1000)) +1000
@@ -220,6 +221,9 @@ function handleAttack(e) {
 }
 
 function aiAttack() {
+    if (game.winner !== null) {
+        game.turn = "player"
+        return render()}
     let currRowIdx = parseInt(Math.floor(Math.random() * 10))
     let currColIdx = parseInt(Math.floor(Math.random() * 10))
     if (game.playerBoard[currRowIdx][currColIdx] === 10) {return aiAttack()}
@@ -234,6 +238,7 @@ function aiAttack() {
     console.log(currRowIdx,currColIdx)
     console.log("player", player)
     console.log("player game board", game)
+    checkWin()
     render()
 }
 
@@ -246,6 +251,22 @@ function attackShipAndRemoveInObj(obj,currRowIdx1,currColIdx1) { //obj = enemy o
             obj[ship].splice(index,1)
         }   
     }
+}
+
+function checkWin() {
+    let totalEnemyLength = 0
+    for (let shipType in enemy) {
+        totalEnemyLength += enemy[shipType].length
+    }
+    console.log(totalEnemyLength)
+    if (totalEnemyLength === 0) {game.winner = "player"}
+
+    let totalPlayerLength = 0
+    for (let shipType in player) {
+        totalPlayerLength += player[shipType].length
+    }
+    console.log(totalPlayerLength)
+    if (totalPlayerLength === 0) {game.winner = "enemy"}
 }
 
 function handleSetupReset() {
@@ -445,6 +466,8 @@ function render() {
   rendersetupCurrSelectedShip()
   renderTurn()
   renderErrorMsg()
+  renderPlayAgainButton()
+  renderWinMessage()
 }
 
 function renderScreen() {
@@ -512,23 +535,44 @@ function renderErrorMsg() {
 //         setupErrorMessageField.innerText = setupErrorMessage
 // },5000)
 }
+
 let timer;
 function renderTurn() {
-    document.querySelector("#game>h1").innerText = ""
+    document.querySelector("#turnMessage").innerText = ""
 
     let turnTimer = function() {
-        document.querySelector("#game>h1").innerText += "."
+        document.querySelector("#turnMessage").innerText += "."
     }
 
     if (game.turn === "enemy") {
-        document.querySelector("#game>h1").innerText = "Enemy is launching an attack"
+        document.querySelector("#turnMessage").innerText = "Enemy is launching an attack"
         timer = setInterval(turnTimer,350)
     }
 
     if (game.turn === "player") {
         clearInterval(timer)
-        document.querySelector("#game>h1").innerText = `${username}'s turn`
+        document.querySelector("#turnMessage").innerText = `${username}'s turn`
     }
+
+    if (game.winner !== null) {
+        document.querySelector("#turnMessage").classList.add("hide")
+    }
+}
+
+function renderPlayAgainButton() {
+    document.querySelector("#playAgainButton").classList.add("hide")
+
+    if (game.winner !== null) {
+        document.querySelector("#playAgainButton").classList.remove("hide")
+    }
+}
+
+function renderWinMessage() {
+    let winMessage = document.querySelector("#winMessage")
+    winMessage.innerText = ""
+
+    if (game.winner === "enemy") {winMessage.innerText = "The enemy has sunk all of your ships... You've lost."}
+    if (game.winner === "player") {winMessage.innerText = `${username} has sunk all of the enemy ships and emerges victorious!`}
 }
 
 // real-time render
