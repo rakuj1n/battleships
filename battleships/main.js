@@ -48,7 +48,8 @@ let CELL_INDICATOR = {
 
 /*----- state variables -----*/
 let game = {
-  turn: "",
+  turn: "player", //player, enemy
+  winner: null,
   screen: "", //startscreen, setupscreen, gamescreen
   setupBoard:[
     [0,0,0,0,0,0,0,0,0,0], //r0 c0-c9
@@ -190,6 +191,9 @@ function createBoard(gridId) {
 }
 
 function handleAttack(e) {
+    //return checks
+    if (game.turn === "enemy") {return}
+    if (game.winner !== null) {return}
     let currRowIdx = parseInt(e.target.id[1])
     let currColIdx = parseInt(e.target.id[3])
     if (game.enemyBoard[currRowIdx][currColIdx] === -10) {return}
@@ -198,13 +202,15 @@ function handleAttack(e) {
     if (game.enemyBoard[currRowIdx][currColIdx] === -13.5) {return}
     if (game.enemyBoard[currRowIdx][currColIdx] === -14) {return}
     if (game.enemyBoard[currRowIdx][currColIdx] === -15) {return}
+    //change to state 
     game.enemyBoard[currRowIdx][currColIdx] -= 10
     // searches enemy object to see if attacked cell is in any of enemy ship positions
     // if yes, finds index of it in found ship array and removes it
     attackShipAndRemoveInObj(enemy,currRowIdx,currColIdx)
 
+    game.turn = "enemy"
     console.log("enemy", enemy)
-    console.log("enemy game board", game.enemyBoard)
+    console.log("enemy game board", game)
     render()
 }
 
@@ -414,6 +420,7 @@ function render() {
   renderBoard("setup")
   renderBoard("enemy")
   rendersetupCurrSelectedShip()
+  renderTurn()
   renderErrorMsg()
 }
 
@@ -481,6 +488,13 @@ function renderErrorMsg() {
 //         setupErrorMessage=""
 //         setupErrorMessageField.innerText = setupErrorMessage
 // },5000)
+}
+
+function renderTurn() {
+    document.querySelector("#game>h2").innerText = ""
+
+    if (game.turn === "enemy") {document.querySelector("#game>h2").innerText = "Enemy's turn"}
+    if (game.turn === "player") {document.querySelector("#game>h2").innerText = `${username}'s turn`}
 }
 
 // real-time render

@@ -61,3 +61,7 @@ body {
 #gridsetup > #errorMessage {
   max-width: 350px;
 }
+
+h2 {
+  color: #7C989F;
+}
