@@ -148,6 +148,7 @@ let setupCruiserButton = document.querySelector("#cruiser")
 let setupBattleshipButton = document.querySelector("#battleship")
 let setupCarrierButton = document.querySelector("#carrier")
 let toggleOrientationButton = document.querySelector("#toggleOrientation")
+let deployButton = document.querySelector("#deployButton")
 
 /*----- event listeners -----*/
 setupDestroyerButton.addEventListener("click",toggleDestroyer)
@@ -156,8 +157,9 @@ setupCruiserButton.addEventListener("click",toggleCruiser)
 setupBattleshipButton.addEventListener("click",toggleBattleship)
 setupCarrierButton.addEventListener("click",toggleCarrier)
 toggleOrientationButton.addEventListener("click",toggleOrientation)
+deployButton.addEventListener("click",handleToGame)
 
-//event listeners for PlacementLens
+//event listeners functions for board tiles
 function createSetupPlacementLensListeners() {
     for (let row = 0;row < game.setupBoard.length; row++) {
         for (let col = 0;col<game.setupBoard[0].length;col++ ) {
@@ -169,6 +171,14 @@ function createSetupPlacementLensListeners2() {
     for (let row = 0;row < game.setupBoard.length; row++) {
         for (let col = 0;col<game.setupBoard[0].length;col++ ) {
                 document.querySelector(`#gridsetup>#r${row}c${col}`).addEventListener("mouseout",removePlacementLens)
+        }
+    }
+}
+
+function createSetupEventList() {
+    for (let row = 0;row < game.setupBoard.length; row++) {
+        for (let col = 0;col<game.setupBoard[0].length;col++ ) {
+                document.querySelector(`#gridsetup>#r${row}c${col}`).addEventListener("click",handlePlaceShip)
         }
     }
 }
@@ -223,6 +233,7 @@ function toggleOrientation() {
 }
 
 function handlePlaceShip(e) {
+    if (availableShipTypesToPlace.length === 0) {return}
     let tilePlacedRow = parseInt(e.target.id[1])
     let tilePlacedCol = parseInt(e.target.id[3])
     let orientation = setupOrientation
@@ -230,7 +241,6 @@ function handlePlaceShip(e) {
     placeShip(tilePlacedRow,tilePlacedCol,orientation,shipType,"setupBoard")
     if (game.setupBoard[tilePlacedRow][tilePlacedCol] === SHIP_VALUES[shipType]) {
         let index = availableShipTypesToPlace.findIndex((ship)=>ship === shipType)
-        console.log(index)
         index != -1 ? availableShipTypesToPlace.splice(index,1) : console.log("null")
         console.log(availableShipTypesToPlace)
         setupCurrSelectedShip = availableShipTypesToPlace[0]
@@ -339,12 +349,10 @@ function toggleCarrier() {
     render()
 }
 
-function createSetupEventList() {
-    for (let row = 0;row < game.setupBoard.length; row++) {
-        for (let col = 0;col<game.setupBoard[0].length;col++ ) {
-                document.querySelector(`#gridsetup>#r${row}c${col}`).addEventListener("click",handlePlaceShip)
-        }
-    }
+
+
+function handleToGame() {
+    game.playerBoard = [...game.setupBoard]
 }
 
 // render functions
@@ -373,6 +381,12 @@ function renderScreen() {
 }
 
 function renderBoard(board) { // "player"
+    for (let row = 0;row < game[`${board}Board`].length; row++) {
+        for (let col = 0;col<game[`${board}Board`][0].length;col++ ) {
+                document.querySelector(`#grid${board}>#r${row}c${col}`).style.backgroundColor = ""
+        }
+    }
+
     for (let row = 0;row < game[`${board}Board`].length; row++) {
         for (let col = 0;col<game[`${board}Board`][0].length;col++ ) {
                 document.querySelector(`#grid${board}>#r${row}c${col}`).style.backgroundColor = CELL_INDICATOR[`${game[`${board}Board`][row][col]}`]
@@ -408,6 +422,11 @@ function rendersetupCurrSelectedShip() {
 }
 
 function renderPlacementLens(e) {
+    for (let row = 0;row < game[`setupBoard`].length; row++) {
+        for (let col = 0;col<game[`setupBoard`][0].length;col++ ) {
+                document.querySelector(`#gridsetup>#r${row}c${col}`).classList.remove("lenshover")
+        }
+    }
     let currRowIdx = parseInt(e.target.id[1])
     let currColIdx = parseInt(e.target.id[3])
     let orientation = setupOrientation
@@ -424,6 +443,7 @@ function renderPlacementLens(e) {
     }}
 }
 function removePlacementLens(e) {
+
     let currRowIdx = parseInt(e.target.id[1])
     let currColIdx = parseInt(e.target.id[3])
     let orientation = setupOrientation
