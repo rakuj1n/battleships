@@ -215,7 +215,7 @@ function handleAttack(e) {
     console.log("enemy game board", game)
     render()
 
-    let randomTime = Math.floor(Math.random()*(2001-500)) +500
+    let randomTime = Math.floor(Math.random()*(2501-1000)) +1000
     setTimeout(aiAttack,randomTime)
 }
 
@@ -522,7 +522,7 @@ function renderTurn() {
 
     if (game.turn === "enemy") {
         document.querySelector("#game>h1").innerText = "Enemy is launching an attack"
-        timer = setInterval(turnTimer,250)
+        timer = setInterval(turnTimer,350)
     }
 
     if (game.turn === "player") {
