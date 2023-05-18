@@ -157,6 +157,22 @@ setupBattleshipButton.addEventListener("click",toggleBattleship)
 setupCarrierButton.addEventListener("click",toggleCarrier)
 toggleOrientationButton.addEventListener("click",toggleOrientation)
 
+//event listeners for PlacementLens
+function createSetupPlacementLensListeners() {
+    for (let row = 0;row < game.setupBoard.length; row++) {
+        for (let col = 0;col<game.setupBoard[0].length;col++ ) {
+                document.querySelector(`#gridsetup>#r${row}c${col}`).addEventListener("mouseover",renderPlacementLens)
+        }
+    }
+}
+function createSetupPlacementLensListeners2() {
+    for (let row = 0;row < game.setupBoard.length; row++) {
+        for (let col = 0;col<game.setupBoard[0].length;col++ ) {
+                document.querySelector(`#gridsetup>#r${row}c${col}`).addEventListener("mouseout",removePlacementLens)
+        }
+    }
+}
+
 
 /*----- functions -----*/
 function init() {
@@ -164,6 +180,8 @@ function init() {
     createBoard("#gridenemy")
     createBoard("#gridplayer")
     createSetupEventList()
+    createSetupPlacementLensListeners()
+    createSetupPlacementLensListeners2()
     aiPlaceShip("destroyer")
     aiPlaceShip("submarine")
     aiPlaceShip("cruiser")
@@ -387,6 +405,39 @@ function rendersetupCurrSelectedShip() {
     if (availableShipTypesToPlace.includes("cruiser")) {setupCruiserButton.classList.remove("hide")}
     if (availableShipTypesToPlace.includes("battleship")) {setupBattleshipButton.classList.remove("hide")}
     if (availableShipTypesToPlace.includes("carrier")) {setupCarrierButton.classList.remove("hide")}
+}
+
+function renderPlacementLens(e) {
+    let currRowIdx = parseInt(e.target.id[1])
+    let currColIdx = parseInt(e.target.id[3])
+    let orientation = setupOrientation
+    let shipSize = SHIP_TYPE_SIZES[setupCurrSelectedShip]
+    if (orientation === "h") {
+    for (let col = 1; col < shipSize; col++) {
+        document.querySelector(`#gridsetup>#r${currRowIdx}c${currColIdx+col}`) ?
+        document.querySelector(`#gridsetup>#r${currRowIdx}c${currColIdx+col}`).classList.add("lenshover") : {}
+    }}
+    if (orientation === "v") {
+    for (let row = 1; row < shipSize; row++) {
+        document.querySelector(`#gridsetup>#r${currRowIdx+row}c${currColIdx}`) ?
+        document.querySelector(`#gridsetup>#r${currRowIdx+row}c${currColIdx}`).classList.add("lenshover") : {}
+    }}
+}
+function removePlacementLens(e) {
+    let currRowIdx = parseInt(e.target.id[1])
+    let currColIdx = parseInt(e.target.id[3])
+    let orientation = setupOrientation
+    let shipSize = SHIP_TYPE_SIZES[setupCurrSelectedShip]
+    if (orientation === "h") {
+    for (let col = 1; col < shipSize; col++) {
+        document.querySelector(`#gridsetup>#r${currRowIdx}c${currColIdx+col}`) ?
+        document.querySelector(`#gridsetup>#r${currRowIdx}c${currColIdx+col}`).classList.remove("lenshover") : {}
+    }}
+    if (orientation === "v") {
+    for (let row = 1; row < shipSize; row++) {
+        document.querySelector(`#gridsetup>#r${currRowIdx+row}c${currColIdx}`) ?
+        document.querySelector(`#gridsetup>#r${currRowIdx+row}c${currColIdx}`).classList.remove("lenshover") : {}
+    }}
 }
 
 // when refactoring after project finish: make a createboard function with arguments 

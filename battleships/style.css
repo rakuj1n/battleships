@@ -53,3 +53,7 @@ body {
 .gridsetup > div:hover {
   filter: brightness(0.8); 
   }
+
+.lenshover {
+  filter: brightness(0.8); 
+}
