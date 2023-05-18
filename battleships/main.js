@@ -1,46 +1,3 @@
-//pseudo code
-// ship types: 5 - carrier || 4 - battleship || 3.1 - cruiser || 3.0 - submarine || 2 - destroyer
-// total 5 ships 
-
-// enemy AI board values are negative || play board values are positive
-// initial board value is 0
-// each battleship type has different value e.g. 2-tile battleship has value of (-)2, 3-tile has (-)3 etc
-
-// when enemy fires at playertile -> value += 10 on player board, player fire at enemytile -> value -= 10
-// loops through board using adjacentcheck lens to see if there is:
-    // 2 -12 values adjacent (2tile battleship) || 3 -13 values adjacent (3tile battleship) || 4 -14 values adjacent etc
-    // to determine if an entire 2tile/3tile etc. battleship has been sunk
-// missed shots should = -10 for enemyboard and 10 for playboard
-
-// enemyAi first will place battleships:
-    // startingplacepoint uses mathrandom for starting tile
-    // code vertical and horizontal placement as two options that enemyAI will mathrandom choose before placing a battleship
-    // use {while} to determine if off-board placement, if so, re-random a startingplacepoint
-    // if no off-board placement until all respective # tiles for battleship type has been placed, move to next battleship type to place
-    // loop until all battleships have been placed
-
-//start game screen explaining rules?
-//next screen 
-    // -> initialise Ai placement of ships
-    // -> player placement screen
-        // player name field
-        // list of ships and tile value that play can press and toggle through current selection
-        // toggle for player to toggle vertical horizontal placement for current selected ship
-        // when placed, ship placed is removed frmo list of ships
-        // clicked tile is the pivotstarttile, will highlight the adjacent tiles as player hovers around different tiles
-        // rmbr to code unplaceable tiles (values !== 0)
-
-// state variables
-    // enemy & player board ship death count
-
-
-//screens
-    //start screen
-    //player setup screen
-    //playing screen
-    //playing screen w/o controls once game over with a reset button
-
-
 /*----- constants -----*/
 let SHIP_TYPE_SIZES = {
     destroyer: 2,
@@ -90,7 +47,7 @@ let CELL_INDICATOR = {
 /*----- state variables -----*/
 let game = {
   turn: "",
-  screen: "setupscreen", //startscreen, setupscreen, gamescreen
+  screen: "startscreen", //startscreen, setupscreen, gamescreen
   setupBoard:[
     [0,0,0,0,0,0,0,0,0,0], //r0 c0-c9
     [0,0,0,0,0,0,0,0,0,0], //r1 c0-c9
@@ -128,6 +85,7 @@ let game = {
     [0,0,0,0,0,0,0,0,0,0] //r9 c0-c9
   ],
 }
+let username = ""
 
 let enemy = {} //stores ship type as key and its indexes on gameboard as values in array
 let player = {}
@@ -152,6 +110,8 @@ let setupCarrierButton = document.querySelector("#carrier")
 let toggleOrientationButton = document.querySelector("#toggleOrientation")
 let deployButton = document.querySelector("#deployButton")
 let setupErrorMessageField = document.querySelector("#errorMessage")
+let usernameField = document.querySelector("#username")
+let resetButton = document.querySelector("#resetButton")
 
 /*----- event listeners -----*/
 setupDestroyerButton.addEventListener("click",toggleDestroyer)
@@ -161,6 +121,8 @@ setupBattleshipButton.addEventListener("click",toggleBattleship)
 setupCarrierButton.addEventListener("click",toggleCarrier)
 toggleOrientationButton.addEventListener("click",toggleOrientation)
 deployButton.addEventListener("click",handleToGame)
+playButton.addEventListener("click",handleToSetup)
+resetButton.addEventListener("click",handleSetupReset)
 
 //event listeners functions for board tiles
 function createSetupPlacementLensListeners() {
@@ -213,6 +175,37 @@ function createBoard(gridId) {
             grid.append(div)
         }
     }
+}
+
+function handleSetupReset() {
+    game.setupBoard = [
+        [0,0,0,0,0,0,0,0,0,0], //r0 c0-c9
+        [0,0,0,0,0,0,0,0,0,0], //r1 c0-c9
+        [0,0,0,0,0,0,0,0,0,0], //r2 c0-c9
+        [0,0,0,0,0,0,0,0,0,0], //r3 c0-c9
+        [0,0,0,0,0,0,0,0,0,0], //r4 c0-c9
+        [0,0,0,0,0,0,0,0,0,0], //r5 c0-c9
+        [0,0,0,0,0,0,0,0,0,0], //r6 c0-c9
+        [0,0,0,0,0,0,0,0,0,0], //r7 c0-c9
+        [0,0,0,0,0,0,0,0,0,0], //r8 c0-c9
+        [0,0,0,0,0,0,0,0,0,0] //r9 c0-c9
+      ]
+    player = {}
+
+    setupCurrSelectedShip = "destroyer" // "destroyer", "cruiser" etc
+    setupOrientation = "v" // v or h
+      
+    availableShipTypesToPlace = ["destroyer","submarine","cruiser","battleship","carrier"]
+      
+    setupErrorMessage = ""
+    render()
+}
+
+function handleToSetup() {
+    username = usernameField.value
+    document.querySelector("#game>#yourwaters").innerText = `${username}'s waters`
+    game.screen = "setupscreen"
+    render()
 }
 
 function toggleOrientation() {
