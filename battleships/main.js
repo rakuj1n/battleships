@@ -23,6 +23,8 @@ let CELL_INDICATOR = {
     "3": "#F7FF58",
     "4": "#FF934F",
     "5": "#5E565A",
+    //enemy misses
+    "10": "#D4FAFA",
     //player got hit
     "12": "#FF0000",
     "13.5": "#FF0000",
@@ -212,15 +214,35 @@ function handleAttack(e) {
     console.log("enemy", enemy)
     console.log("enemy game board", game)
     render()
+
+    setTimeout(aiAttack(),2000)
+}
+
+function aiAttack() {
+    let currRowIdx = parseInt(Math.floor(Math.random() * 10))
+    let currColIdx = parseInt(Math.floor(Math.random() * 10))
+    if (game.playerBoard[currRowIdx][currColIdx] === 10) {return aiAttack()}
+    if (game.playerBoard[currRowIdx][currColIdx] === 12) {return aiAttack()}
+    if (game.playerBoard[currRowIdx][currColIdx] === 13) {return aiAttack()}
+    if (game.playerBoard[currRowIdx][currColIdx] === 13.5) {return aiAttack()}
+    if (game.playerBoard[currRowIdx][currColIdx] === 14) {return aiAttack()}
+    if (game.playerBoard[currRowIdx][currColIdx] === 15) {return aiAttack()}
+    game.playerBoard[currRowIdx][currColIdx] += 10
+    attackShipAndRemoveInObj(player,currRowIdx,currColIdx)
+    game.turn = "player"
+    console.log(currRowIdx,currColIdx)
+    console.log("player", player)
+    console.log("player game board", game)
+    render()
 }
 
 function attackShipAndRemoveInObj(obj,currRowIdx1,currColIdx1) { //obj = enemy or player, no quotes
-    for (let ship in enemy) {
-        let index = enemy[ship].findIndex((tilePos)=>{
+    for (let ship in obj) {
+        let index = obj[ship].findIndex((tilePos)=>{
             return tilePos[0] === currRowIdx1 && tilePos[1] === currColIdx1
         })
         if (index !== -1) {
-            enemy[ship].splice(index,1)
+            obj[ship].splice(index,1)
         }   
     }
 }
