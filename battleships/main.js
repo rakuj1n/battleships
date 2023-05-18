@@ -29,12 +29,12 @@ let CELL_INDICATOR = {
     "13": "#FF0000",
     "14": "#FF0000",
     "15": "#FF0000",
-    //enemy ships
-    "-2": "#EFECCA",
-    "-3.5": "#A9CBB7",
-    "-3": "#F7FF58",
-    "-4": "#FF934F",
-    "-5": "#5E565A",
+    //enemy ships (hidden)
+    "-2": "#FFFFFF",
+    "-3.5": "#FFFFFF",
+    "-3": "#FFFFFF",
+    "-4": "#FFFFFF",
+    "-5": "#FFFFFF",
     //enemy got hit
     "-12": "#FF0000",
     "-13.5": "#FF0000",
@@ -370,6 +370,7 @@ function render() {
   renderScreen()
   renderBoard("player")
   renderBoard("setup")
+  renderBoard("enemy")
   rendersetupCurrSelectedShip()
   renderErrorMsg()
 }
