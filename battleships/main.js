@@ -195,16 +195,10 @@ function init() {
     createSetupEventList()
     createSetupPlacementLensListeners()
     createSetupPlacementLensListeners2()
-    aiPlaceShip("destroyer")
-    aiPlaceShip("submarine")
-    aiPlaceShip("cruiser")
-    aiPlaceShip("battleship")
-    aiPlaceShip("carrier")
     render()
     console.log(game)
     console.log(enemy)
     console.log(player)
-    
 }
 
 
@@ -368,6 +362,12 @@ function handleToGame() {
         return render()
     }
     game.playerBoard = [...game.setupBoard]
+    aiPlaceShip("destroyer")
+    aiPlaceShip("submarine")
+    aiPlaceShip("cruiser")
+    aiPlaceShip("battleship")
+    aiPlaceShip("carrier")
+    game.screen = "gamescreen"
     console.log(game)
     render()
 }
@@ -377,7 +377,6 @@ function render() {
   renderScreen()
   renderBoard("player")
   renderBoard("setup")
-  renderBoard("enemy") //remove this later
   rendersetupCurrSelectedShip()
   renderErrorMsg()
 }
