@@ -117,6 +117,7 @@ let deployButton = document.querySelector("#deployButton")
 let setupErrorMessageField = document.querySelector("#errorMessage")
 let usernameField = document.querySelector("#username")
 let resetButton = document.querySelector("#resetButton")
+let playAgainButton = document.querySelector("#playAgainButton")
 
 /*----- event listeners -----*/
 setupDestroyerButton.addEventListener("click",toggleDestroyer)
@@ -128,6 +129,7 @@ toggleOrientationButton.addEventListener("click",toggleOrientation)
 deployButton.addEventListener("click",handleToGame)
 playButton.addEventListener("click",handleToSetup)
 resetButton.addEventListener("click",handleSetupReset)
+playAgainButton.addEventListener("click",handlePlayAgain)
 
 //event listeners functions for board tiles
 function createSetupPlacementLensListeners() {
@@ -190,6 +192,58 @@ function createBoard(gridId) {
             grid.append(div)
         }
     }
+}
+
+function handlePlayAgain() {
+    game.screen = "startscreen"
+    game.turn = "player"
+    game.winner = null, //enemy, player
+    game.setupBoard = [
+      [0,0,0,0,0,0,0,0,0,0], //r0 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r1 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r2 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r3 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r4 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r5 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r6 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r7 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r8 c0-c9
+      [0,0,0,0,0,0,0,0,0,0] //r9 c0-c9
+    ]
+    game.enemyBoard = [
+      [0,0,0,0,0,0,0,0,0,0], //r0 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r1 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r2 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r3 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r4 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r5 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r6 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r7 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r8 c0-c9
+      [0,0,0,0,0,0,0,0,0,0] //r9 c0-c9
+    ]
+    game.playerBoard = [
+      [0,0,0,0,0,0,0,0,0,0], //r0 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r1 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r2 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r3 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r4 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r5 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r6 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r7 c0-c9
+      [0,0,0,0,0,0,0,0,0,0], //r8 c0-c9
+      [0,0,0,0,0,0,0,0,0,0] //r9 c0-c9
+    ]
+
+    username = ""
+  
+    enemy = {} //stores ship type as key and its indexes on gameboard as values in array
+    player = {}
+    setupCurrSelectedShip = "destroyer" // "destroyer", "cruiser" etc
+    setupOrientation = "v" // v or h
+    availableShipTypesToPlace = ["destroyer","submarine","cruiser","battleship","carrier"]
+    setupErrorMessage = ""
+    render()
 }
 
 function handleAttack(e) {
@@ -301,15 +355,15 @@ function handleToSetup() {
 }
 
 function toggleOrientation() {
-    if (toggleOrientationButton.innerText === "Vertical") {
-        setupOrientation = "h"
+    if (setupOrientation === "h") {
         console.log(setupOrientation)
-        return toggleOrientationButton.innerText = "Horizontal"
-    }
-    if (toggleOrientationButton.innerText === "Horizontal") {
         setupOrientation = "v"
+        return render()
+    }
+    if (setupOrientation === "v") {
         console.log(setupOrientation)
-        return toggleOrientationButton.innerText = "Vertical"
+        setupOrientation = "h"
+        return render()
     }
     
 }
@@ -468,6 +522,7 @@ function render() {
   renderErrorMsg()
   renderPlayAgainButton()
   renderWinMessage()
+  renderOrientaion()
 }
 
 function renderScreen() {
@@ -527,6 +582,12 @@ function rendersetupCurrSelectedShip() {
     if (availableShipTypesToPlace.includes("carrier")) {setupCarrierButton.classList.remove("hide")}
 }
 
+function renderOrientaion() {
+    document.querySelector("#toggleOrientation").innerText=""
+    if (setupOrientation === "v") {document.querySelector("#toggleOrientation").innerText="Vertical"}
+    if (setupOrientation === "h") {document.querySelector("#toggleOrientation").innerText="Horizontal"}
+}
+
 function renderErrorMsg() {
     setupErrorMessageField.innerText = ""
     setupErrorMessageField.innerText = setupErrorMessage
@@ -539,6 +600,7 @@ function renderErrorMsg() {
 let timer;
 function renderTurn() {
     document.querySelector("#turnMessage").innerText = ""
+    document.querySelector("#turnMessage").classList.remove("hide")
 
     let turnTimer = function() {
         document.querySelector("#turnMessage").innerText += "."
