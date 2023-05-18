@@ -35,6 +35,8 @@ let CELL_INDICATOR = {
     "-3": "#FFFFFF",
     "-4": "#FFFFFF",
     "-5": "#FFFFFF",
+    //player misses
+    "-10": "#D4FAFA",
     //enemy got hit
     "-12": "#FF0000",
     "-13.5": "#FF0000",
@@ -47,7 +49,7 @@ let CELL_INDICATOR = {
 /*----- state variables -----*/
 let game = {
   turn: "",
-  screen: "startscreen", //startscreen, setupscreen, gamescreen
+  screen: "", //startscreen, setupscreen, gamescreen
   setupBoard:[
     [0,0,0,0,0,0,0,0,0,0], //r0 c0-c9
     [0,0,0,0,0,0,0,0,0,0], //r1 c0-c9
@@ -148,15 +150,25 @@ function createSetupEventList() {
     }
 }
 
+function createAttackEnemyEventList() {
+    for (let row = 0;row < game.enemyBoard.length; row++) {
+        for (let col = 0;col<game.enemyBoard[0].length;col++ ) {
+                document.querySelector(`#gridenemy>#r${row}c${col}`).addEventListener("click",handleAttack)
+        }
+    }
+}
+
 
 /*----- functions -----*/
 function init() {
+    game.screen = "startscreen"
     createBoard("#gridsetup")
     createBoard("#gridenemy")
     createBoard("#gridplayer")
     createSetupEventList()
     createSetupPlacementLensListeners()
     createSetupPlacementLensListeners2()
+    createAttackEnemyEventList()
     render()
     console.log(game)
     console.log(enemy)
@@ -174,6 +186,36 @@ function createBoard(gridId) {
             let grid = document.querySelector(gridId)
             grid.append(div)
         }
+    }
+}
+
+function handleAttack(e) {
+    let currRowIdx = parseInt(e.target.id[1])
+    let currColIdx = parseInt(e.target.id[3])
+    if (game.enemyBoard[currRowIdx][currColIdx] === -10) {return}
+    if (game.enemyBoard[currRowIdx][currColIdx] === -12) {return}
+    if (game.enemyBoard[currRowIdx][currColIdx] === -13) {return}
+    if (game.enemyBoard[currRowIdx][currColIdx] === -13.5) {return}
+    if (game.enemyBoard[currRowIdx][currColIdx] === -14) {return}
+    if (game.enemyBoard[currRowIdx][currColIdx] === -15) {return}
+    game.enemyBoard[currRowIdx][currColIdx] -= 10
+    // searches enemy object to see if attacked cell is in any of enemy ship positions
+    // if yes, finds index of it in found ship array and removes it
+    attackShipAndRemoveInObj(enemy,currRowIdx,currColIdx)
+
+    console.log("enemy", enemy)
+    console.log("enemy game board", game.enemyBoard)
+    render()
+}
+
+function attackShipAndRemoveInObj(obj,currRowIdx1,currColIdx1) { //obj = enemy or player, no quotes
+    for (let ship in enemy) {
+        let index = enemy[ship].findIndex((tilePos)=>{
+            return tilePos[0] === currRowIdx1 && tilePos[1] === currColIdx1
+        })
+        if (index !== -1) {
+            enemy[ship].splice(index,1)
+        }   
     }
 }
 
@@ -464,7 +506,6 @@ function renderPlacementLens(e) {
     }}
 }
 function removePlacementLens(e) {
-
     let currRowIdx = parseInt(e.target.id[1])
     let currColIdx = parseInt(e.target.id[3])
     let orientation = setupOrientation
