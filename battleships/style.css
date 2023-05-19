@@ -7,6 +7,24 @@ body {
   align-items: center;
 }
 
+#startscreen {
+  width: min(65ch,100% - 4rem);
+  justify-content: center;
+  align-items: center;
+}
+
+#playersetup {
+  width: min(65ch,100% - 4rem);
+  justify-content: center;
+  align-items: center;
+}
+
+#game {
+  width: min(65ch,100% - 4rem);
+  justify-content: center;
+  align-items: center;
+}
+
 .gridenemy, .gridplayer, .gridsetup {
   display: grid;
   grid-template-columns: repeat(10,1fr);

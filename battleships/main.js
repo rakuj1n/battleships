@@ -236,7 +236,7 @@ function handlePlayAgain() {
       [0,0,0,0,0,0,0,0,0,0], //r8 c0-c9
       [0,0,0,0,0,0,0,0,0,0] //r9 c0-c9
     ]
-
+    enemyZoningAttackPattern = []
     username = ""
     enemyAttackLog = {}
     enemy = {} //stores ship type as key and its indexes on gameboard as values in array
@@ -669,12 +669,14 @@ function renderTurn() {
     }
 
     if (game.turn === "enemy") {
+        document.querySelector("#turnMessage").style.color = "#dc4d01"
         document.querySelector("#turnMessage").innerText = "Enemy is launching an attack"
         timer = setInterval(turnTimer,350)
     }
 
     if (game.turn === "player") {
         clearInterval(timer)
+        document.querySelector("#turnMessage").style.color = ""
         document.querySelector("#turnMessage").innerText = `${username}'s turn`
     }
 
