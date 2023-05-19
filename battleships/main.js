@@ -102,6 +102,8 @@ let availableShipTypesToPlace = ["destroyer","submarine","cruiser","battleship",
 
 let setupErrorMessage = ""
 
+let enemyAttackLog = {}
+
 /*----- cached elements  -----*/
 let startScreen = document.querySelector("#startscreen")
 let setupScreen = document.querySelector("#playersetup")
@@ -288,6 +290,12 @@ function aiAttack() {
     if (game.playerBoard[currRowIdx][currColIdx] === 15) {return aiAttack()}
     game.playerBoard[currRowIdx][currColIdx] += 10
     attackShipAndRemoveInObj(player,currRowIdx,currColIdx)
+    // enemy attack log
+    if (game.playerBoard[currRowIdx][currColIdx]>10) {
+    enemyAttackLog[`${currRowIdx},${currColIdx}`] = "hit"
+    } else {enemyAttackLog[`${currRowIdx},${currColIdx}`] = "miss"}
+    console.log(enemyAttackLog)
+    //
     game.turn = "player"
     console.log(currRowIdx,currColIdx)
     console.log("player", player)
