@@ -248,6 +248,20 @@ function handlePlayAgain() {
     render()
 }
 
+function changeBorderColorWhenHit(newColor) {
+    let originalColor = "#000000"
+    let allGrids = document.querySelectorAll("#gridplayer>div")
+    for (let x of allGrids) {
+        x.style.borderColor = newColor
+    }
+
+    setTimeout(function() {
+        for (let x of allGrids) {
+            x.style.borderColor = originalColor
+        }
+    },700)
+}
+
 function handleAttack(e) {
     //return checks
     if (game.turn === "enemy") {return}
@@ -272,7 +286,7 @@ function handleAttack(e) {
     checkWin()
     render()
 
-    let randomTime = Math.floor(Math.random()*(2501-1000)) +1000
+    let randomTime = Math.floor(Math.random()*(2501-2000)) +2000
     setTimeout(aiAttack,randomTime)
 }
 
@@ -296,7 +310,11 @@ function aiAttack() {
     // enemy attack log
     if (game.playerBoard[currRowIdx][currColIdx]>10) {
     enemyAttackLog[`${currRowIdx},${currColIdx}`] = "hit"
-    } else {enemyAttackLog[`${currRowIdx},${currColIdx}`] = "miss"}
+    changeBorderColorWhenHit("#FF0000")
+    } else {
+        enemyAttackLog[`${currRowIdx},${currColIdx}`] = "miss"
+        changeBorderColorWhenHit("#0000FF")
+    }
     console.log(enemyAttackLog)
     //
     game.turn = "player"
@@ -306,6 +324,8 @@ function aiAttack() {
     checkWin()
     render()
 }
+
+
 
 let enemyZoningAttackPattern = []
 function aiDetermineAttackTile() { //this function should return ONLY the attack tile coords to feed into the aiAttack function
@@ -697,8 +717,14 @@ function renderWinMessage() {
     let winMessage = document.querySelector("#winMessage")
     winMessage.innerText = ""
 
-    if (game.winner === "enemy") {winMessage.innerText = "The enemy has sunk all of your ships... You've lost."}
-    if (game.winner === "player") {winMessage.innerText = `${username} has sunk all of the enemy ships and emerges victorious!`}
+    if (game.winner === "enemy") {
+        winMessage.style.color = "#dc4d01"
+        winMessage.innerText = "The enemy has sunk all of your ships... You've lost."
+    }
+    if (game.winner === "player") {
+        winMessage.style.color = ""
+        winMessage.innerText = `${username} has sunk all of the enemy ships and emerges victorious!`
+    }
 }
 
 // real-time render

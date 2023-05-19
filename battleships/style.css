@@ -84,3 +84,7 @@ body {
   color: #7C989F;
   font-weight: 900;
 }
+
+#errorMessage {
+  color: red
+}
