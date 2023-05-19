@@ -238,7 +238,7 @@ function handlePlayAgain() {
     ]
 
     username = ""
-  
+    enemyAttackLog = {}
     enemy = {} //stores ship type as key and its indexes on gameboard as values in array
     player = {}
     setupCurrSelectedShip = "destroyer" // "destroyer", "cruiser" etc
@@ -280,8 +280,11 @@ function aiAttack() {
     if (game.winner !== null) {
         game.turn = "player"
         return render()}
-    let currRowIdx = parseInt(Math.floor(Math.random() * 10))
-    let currColIdx = parseInt(Math.floor(Math.random() * 10))
+    let aiDetermineAttackTileResult = aiDetermineAttackTile()
+    let currRowIdx = aiDetermineAttackTileResult[0]
+    let currColIdx = aiDetermineAttackTileResult[1]
+    
+    if (game.playerBoard[currRowIdx][currColIdx] === undefined) {return aiAttack()} // check this again when ai is done
     if (game.playerBoard[currRowIdx][currColIdx] === 10) {return aiAttack()}
     if (game.playerBoard[currRowIdx][currColIdx] === 12) {return aiAttack()}
     if (game.playerBoard[currRowIdx][currColIdx] === 13) {return aiAttack()}
@@ -297,11 +300,62 @@ function aiAttack() {
     console.log(enemyAttackLog)
     //
     game.turn = "player"
-    console.log(currRowIdx,currColIdx)
+    console.log("ai attack coords",currRowIdx,currColIdx)
     console.log("player", player)
     console.log("player game board", game)
     checkWin()
     render()
+}
+
+let enemyZoningAttackPattern = []
+function aiDetermineAttackTile() { //this function should return ONLY the attack tile coords to feed into the aiAttack function
+    // check attacklog if there is "hit" && enemyZoningAttackPattern.length > 0
+    if (Object.values(enemyAttackLog).some((x)=>x==="hit")) {
+        // empty out enemyZoningAttackPattern
+        // push 4 adjacent tile coords of all hits into enemyZoningAttackPattern e.g. [5][5] -> [4,5][6,5][5,4][5,6] https://stackoverflow.com/questions/25095789/return-an-object-key-only-if-value-is-true
+        let keys = Object.keys(enemyAttackLog)
+        let hitFilter = keys.filter((key)=>{    //stores array of keys that are hits
+            return enemyAttackLog[key] === "hit"
+        })
+        console.log("hits",hitFilter) // ["1,9","2,1"] etc. extract coords from filter and push 4 for all coords
+        for (let coord of hitFilter) {
+            let curRow = parseInt(coord[0])
+            let curCol = parseInt(coord[2])
+            enemyZoningAttackPattern.push([curRow-1,curCol])
+            enemyZoningAttackPattern.push([curRow+1,curCol])
+            enemyZoningAttackPattern.push([curRow,curCol+1])
+            enemyZoningAttackPattern.push([curRow,curCol-1])
+        }
+        console.log("inital push",enemyZoningAttackPattern) // [[1,2],[2,3]]
+        // check all elements of enemyZoningAttackPattern for invalid coords and splice them out
+        enemyZoningAttackPattern = enemyZoningAttackPattern.filter((coord)=>{ // [1,2]
+            return (0<= coord[1] && coord[1]<=9)
+        })
+        enemyZoningAttackPattern = enemyZoningAttackPattern.filter((coord)=>{ // [1,2]
+            return (0<= coord[0] && coord[0]<=9)
+        })
+        console.log("filter invalid",enemyZoningAttackPattern)
+        // check all elements of enemyZoningAttackPattern for already-attacked coords with board and splice them out
+        enemyZoningAttackPattern = enemyZoningAttackPattern.filter((coord)=>{ // [1,2]
+            return game.playerBoard[coord[0]][coord[1]] < 10
+        })
+        console.log("filter already hit",enemyZoningAttackPattern)
+        // if enemyZoningAttackPattern.length > 0, randomly choose any of the coords using index and set attack tile as those coords
+        if (enemyZoningAttackPattern.length>0) {
+            let rdmAttackIdx = Math.floor(Math.random()*enemyZoningAttackPattern.length)
+            console.log(`enemy does attack pattern at ${enemyZoningAttackPattern[rdmAttackIdx][0]},${enemyZoningAttackPattern[rdmAttackIdx][1]}`)
+            return [enemyZoningAttackPattern[rdmAttackIdx][0],enemyZoningAttackPattern[rdmAttackIdx][1]]
+        } else {
+        // else (for all hits, all adjacent tiles have been attacked) return aiDetermineAttackTile()
+            console.log("enemy does random after attack pattern tiles are all attacked")
+           return [parseInt(Math.floor(Math.random() * 10)),parseInt(Math.floor(Math.random() * 10))]
+            
+        }        
+    } else {
+    // else default attack is random   
+    console.log("skipped if of aidetermine") 
+    return [parseInt(Math.floor(Math.random() * 10)),parseInt(Math.floor(Math.random() * 10))]
+    }
 }
 
 function attackShipAndRemoveInObj(obj,currRowIdx1,currColIdx1) { //obj = enemy or player, no quotes
@@ -320,14 +374,14 @@ function checkWin() {
     for (let shipType in enemy) {
         totalEnemyLength += enemy[shipType].length
     }
-    console.log(totalEnemyLength)
+    console.log("enemy hp",totalEnemyLength)
     if (totalEnemyLength === 0) {game.winner = "player"}
 
     let totalPlayerLength = 0
     for (let shipType in player) {
         totalPlayerLength += player[shipType].length
     }
-    console.log(totalPlayerLength)
+    console.log("player hp",totalPlayerLength)
     if (totalPlayerLength === 0) {game.winner = "enemy"}
 }
 
