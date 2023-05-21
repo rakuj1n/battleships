@@ -325,7 +325,7 @@ function handleAttack(e) {
     checkWin()
     render()
 
-    let randomTime = Math.floor(Math.random()*(2501-2000)) +2000
+    let randomTime = Math.floor(Math.random()*(2201-2000)) +2000
     setTimeout(aiAttack,randomTime)
 }
 
@@ -406,14 +406,21 @@ function aiDetermineAttackTile() { //this function should return ONLY the attack
             return [enemyZoningAttackPattern[rdmAttackIdx][0],enemyZoningAttackPattern[rdmAttackIdx][1]]
         } else {
         // else (for all hits, all adjacent tiles have been attacked) return aiDetermineAttackTile()
-            console.log("enemy does random after attack pattern tiles are all attacked")
-           return [parseInt(Math.floor(Math.random() * 10)),parseInt(Math.floor(Math.random() * 10))]
-            
+            console.log("enemy does random (2/3) after attack pattern tiles are all attacked")        
+            // let remainingPlayer = [...player.destroyer,...player.submarine,...player.cruiser,...player.battleship,...player.carrier]
+            // let oddsResult = Math.floor(Math.random() * 3) + 1
+            // if (oddsResult === 1) {
+            //     console.log("ai got 1/3")
+            //     let randomIdx1 = Math.floor(Math.random() * remainingPlayer.length)
+            //     return [remainingPlayer[randomIdx1][0],remainingPlayer[randomIdx1][1]]
+            // } else 
+            return [parseInt(Math.floor(Math.random() * 10)),parseInt(Math.floor(Math.random() * 10))]
+        // }
         }        
     } else {
-    // else default attack is random   
-    console.log("skipped if of aidetermine") 
-    return [parseInt(Math.floor(Math.random() * 10)),parseInt(Math.floor(Math.random() * 10))]
+    // else default attack is random 
+        console.log("skipped if of aidetermine")
+        return [parseInt(Math.floor(Math.random() * 10)),parseInt(Math.floor(Math.random() * 10))]
     }
 }
 
