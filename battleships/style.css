@@ -9,9 +9,13 @@ body {
   color:#DDE6ED;
 }
 
+button {
+  font-family: 'Wix Madefor Display', sans-serif;
+}
+
 .container {
   width: min(65ch,100% - 4rem);
-  /* display: flex; */
+  display: flex;
   justify-content: center;
   align-items: center;
 }
@@ -45,6 +49,11 @@ body {
 
 #shipsToBeDeployed > div {
   border: 2px solid;
+  vertical-align: middle;
+  padding: 10px 0;
+  text-align: center;
+  margin: auto;
+  width: 391px;
 }
 
 .gridsetup > div:hover {
@@ -62,7 +71,8 @@ body {
 }
 
 #errorMessage {
-  color: red
+  color: red;
+  max-width: 391px;
 }
 
 #turnMessage {

@@ -679,8 +679,8 @@ function rendersetupCurrSelectedShip() {
 
 function renderOrientaion() {
     document.querySelector("#toggleOrientation").innerText=""
-    if (setupOrientation === "v") {document.querySelector("#toggleOrientation").innerText="Vertical"}
-    if (setupOrientation === "h") {document.querySelector("#toggleOrientation").innerText="Horizontal"}
+    if (setupOrientation === "v") {document.querySelector("#toggleOrientation").innerText="Current orientation: Vertical"}
+    if (setupOrientation === "h") {document.querySelector("#toggleOrientation").innerText="Current orientation: Horizontal"}
 }
 
 function renderErrorMsg() {
