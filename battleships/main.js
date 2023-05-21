@@ -710,7 +710,7 @@ function renderTurn() {
     if (game.turn === "player") {
         clearInterval(timer)
         document.querySelector("#turnMessage").style.color = ""
-        document.querySelector("#turnMessage").innerText = `${username}'s turn`
+        document.querySelector("#turnMessage").innerText = `${username}'s turn to attack`
     }
 
     if (game.winner !== null) {
