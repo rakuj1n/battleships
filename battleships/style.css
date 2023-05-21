@@ -11,14 +11,52 @@ body {
 
 button {
   font-family: 'Wix Madefor Display', sans-serif;
+  text-align: center;
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+  color: #ffffff;
+  font-size: 15px;
+  background: #9DB2BF;
+  padding: 6px 12px 6px 12px;
+  text-decoration: none;
+  outline: none;
+  border: none;
 }
+
+button:hover {
+  background: #526D82;
+  background-image: -webkit-linear-gradient(top, #526D82, #526D82);
+  background-image: -moz-linear-gradient(top, #526D82, #526D82);
+  background-image: -ms-linear-gradient(top, #526D82, #526D82);
+  background-image: -o-linear-gradient(top, #526D82, #526D82);
+  background-image: linear-gradient(to bottom, #526D82, #526D82);
+  text-decoration: none;
+  outline: none;
+  border: none;
+}
+
+#login {
+  text-align: center;
+}
+
+#setupOptions {
+  text-align: center;
+}
+
+#playagaindiv {
+  text-align: center;
+}
+
 
 .container {
   width: min(65ch,100% - 4rem);
-  display: flex;
   justify-content: center;
+  display: flex;
   align-items: center;
 }
+
+
 
 .gridenemy, .gridplayer, .gridsetup {
   display: grid;
@@ -72,9 +110,30 @@ button {
 
 #errorMessage {
   color: red;
+  /* height: 40px; */
   max-width: 391px;
 }
 
 #turnMessage {
   height: 70px;
+  max-width: 391px;
 }
+
+#winMessage {
+  max-width: 391px;
+}
+
+#game > h1,h3 {
+  text-align: center;
+}
+
+#playersetup > h1,h3 {
+  text-align: center;
+}
+
+#startscreen > h1 {
+  text-align: center;
+}
+
+
+

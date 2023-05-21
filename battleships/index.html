@@ -16,12 +16,16 @@
       <h1>Battleships</h1>
       <p>Who will emerge victorious in the dangerous waters of naval combat?
         Battleships is a game played on a 10x10 square grid. Place 5 ships of differing length onto the square grid. This is 'your waters'. The computer will do the same on their grid. This is the 'enemy's waters'. You will not be able to see their ship placements and vice-versa. Take turns clicking on a single tile on each other's boards to send a 'missile' to that tile. A hit or miss will be registered on your view of the opponent's board. Whoever sinks all of their opponent's ships first will be the winner.</p>
-      <label for="username">Enter your username: <input id="username"></label>
-      <label for="start"><button id="startbutton">Start</button></label>
+      <div id="login">  
+        <label for="username">Enter your username: <input id="username"></label>
+        <br/>
+        <br/>
+        <label for="start"><button id="startbutton">Start</button></label>
+      </div>  
     </section>
     </div>
 
-  <div class="container">
+  <div class="container" id="setupcontainer">
   <section id="playersetup">
       <h1>Set up your battleships!</h1>
       <div class="grid gridsetup" id="gridsetup"></div>
@@ -37,9 +41,11 @@
       <br/>
       <div id="errorMessage"></div>
       <br/>
-      <label for="reset"><button id="resetButton">Reset deployment</button></label>
-      <label for="toGame"><button id="deployButton">Deploy for sortie!</button></label>
-  </section>
+      <div id="setupOptions">
+        <label for="reset"><button id="resetButton">Reset deployment</button></label>
+        <label for="toGame"><button id="deployButton">Deploy for sortie!</button></label>
+      </div>
+    </section>
   </div>
 
   <div class="container">
@@ -52,7 +58,9 @@
       <h3 id="yourwaters">Your waters</h3>
       <div class="grid gridplayer" id="gridplayer"></div>
       <br/>
-      <button id="playAgainButton">Play Again!</button>
+      <div id="playagaindiv">
+        <button id="playAgainButton">Play Again!</button>
+      </div>
   </section>
   </div>
     <script type="module" src="main.js"></script>
