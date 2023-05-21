@@ -248,20 +248,54 @@ function handlePlayAgain() {
     render()
 }
 
-function changeBorderColorWhenHit(newColor,row,col) {
+function changeBorderColorWhenHitEnemy(row,col) {
+    // let allGrids = document.querySelectorAll("#gridplayer>div")
+    // for (let x of allGrids) {
+    //     x.style.borderColor = newColor
+    // }
+    // document.querySelector(`#gridplayer>#r${row}c${col}`).style.borderStyle = "dashed"
+    document.querySelector("#enemywaters").style.color = "#FF0000"
+
+    setTimeout(function() {
+        // for (let x of allGrids) {
+        //     x.style.borderColor = originalColor
+        // }
+        document.querySelector("#enemywaters").style.color = ""
+    },700)
+}
+
+function changeBorderColorWhenHit(row,col) {
     let originalColor = ""
     let allGrids = document.querySelectorAll("#gridplayer>div")
     // for (let x of allGrids) {
     //     x.style.borderColor = newColor
     // }
-    console.log(document.querySelector(`#r${row}c${col}`))
+    // document.querySelector(`#gridplayer>#r${row}c${col}`).style.borderStyle = "dashed"
+    document.querySelector(`#gridplayer>#r${row}c${col}`).style.boxShadow = "0px 0px 0px 2px #27374D inset"
+    document.querySelector("#yourwaters").style.color = "#FF0000"
+
+    setTimeout(function() {
+        // for (let x of allGrids) {
+        //     x.style.borderColor = originalColor
+        // }
+        document.querySelector(`#gridplayer>#r${row}c${col}`).style.boxShadow = ""
+        document.querySelector("#yourwaters").style.color = ""
+    },700)
+}
+
+function changeBorderColorWhenMiss(row,col) {
+    let originalColor = ""
+    let allGrids = document.querySelectorAll("#gridplayer>div")
+    // for (let x of allGrids) {
+    //     x.style.borderColor = newColor
+    // }
     // document.querySelector(`#gridplayer>#r${row}c${col}`).style.borderStyle = "dashed"
     document.querySelector(`#gridplayer>#r${row}c${col}`).style.boxShadow = "0px 0px 0px 2px #27374D inset"
 
     setTimeout(function() {
-        for (let x of allGrids) {
-            x.style.borderColor = originalColor
-        }
+        // for (let x of allGrids) {
+        //     x.style.borderColor = originalColor
+        // }
         document.querySelector(`#gridplayer>#r${row}c${col}`).style.boxShadow = ""
     },700)
 }
@@ -280,6 +314,7 @@ function handleAttack(e) {
     if (game.enemyBoard[currRowIdx][currColIdx] === -15) {return}
     //change to state 
     game.enemyBoard[currRowIdx][currColIdx] -= 10
+    if (game.enemyBoard[currRowIdx][currColIdx]<-10) {changeBorderColorWhenHitEnemy(currRowIdx,currColIdx)}
     // searches enemy object to see if attacked cell is in any of enemy ship positions
     // if yes, finds index of it in found ship array and removes it
     attackShipAndRemoveInObj(enemy,currRowIdx,currColIdx)
@@ -314,10 +349,10 @@ function aiAttack() {
     // enemy attack log
     if (game.playerBoard[currRowIdx][currColIdx]>10) {
         enemyAttackLog[`${currRowIdx},${currColIdx}`] = "hit"
-        changeBorderColorWhenHit("#FF0000",currRowIdx,currColIdx)
+        changeBorderColorWhenHit(currRowIdx,currColIdx)
     } else {
         enemyAttackLog[`${currRowIdx},${currColIdx}`] = "miss"
-        changeBorderColorWhenHit("#0000FF",currRowIdx,currColIdx)
+        changeBorderColorWhenMiss(currRowIdx,currColIdx)
     }
     console.log(enemyAttackLog)
     //
