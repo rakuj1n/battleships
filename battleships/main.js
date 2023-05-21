@@ -248,17 +248,21 @@ function handlePlayAgain() {
     render()
 }
 
-function changeBorderColorWhenHit(newColor) {
+function changeBorderColorWhenHit(newColor,row,col) {
     let originalColor = "#000000"
     let allGrids = document.querySelectorAll("#gridplayer>div")
     for (let x of allGrids) {
         x.style.borderColor = newColor
     }
+    console.log(document.querySelector(`#r${row}c${col}`))
+    // document.querySelector(`#gridplayer>#r${row}c${col}`).style.borderStyle = "dashed"
+    document.querySelector(`#gridplayer>#r${row}c${col}`).style.boxShadow = "0px 0px 0px 2px inset"
 
     setTimeout(function() {
         for (let x of allGrids) {
             x.style.borderColor = originalColor
         }
+        document.querySelector(`#gridplayer>#r${row}c${col}`).style.boxShadow = ""
     },700)
 }
 
@@ -309,11 +313,11 @@ function aiAttack() {
     attackShipAndRemoveInObj(player,currRowIdx,currColIdx)
     // enemy attack log
     if (game.playerBoard[currRowIdx][currColIdx]>10) {
-    enemyAttackLog[`${currRowIdx},${currColIdx}`] = "hit"
-    changeBorderColorWhenHit("#FF0000")
+        enemyAttackLog[`${currRowIdx},${currColIdx}`] = "hit"
+        changeBorderColorWhenHit("#FF0000",currRowIdx,currColIdx)
     } else {
         enemyAttackLog[`${currRowIdx},${currColIdx}`] = "miss"
-        changeBorderColorWhenHit("#0000FF")
+        changeBorderColorWhenHit("#0000FF",currRowIdx,currColIdx)
     }
     console.log(enemyAttackLog)
     //
@@ -637,6 +641,15 @@ function renderBoard(board) { // "player"
     }
 }
 
+// function changeTileColorWhenHit(newColor,row,col) {
+//     let originalColor = "#D4FAFA"
+//     document.querySelector(`#r${row}c${col}`).style.backgroundColor = newColor
+
+//     setTimeout(function() {
+//         document.querySelector(`#r${row}c${col}`).style.backgroundColor = originalColor
+//     },700)
+// }
+
 function rendersetupCurrSelectedShip() {
     setupDestroyerButton.style.backgroundColor = ""
     setupSubmarineButton.style.backgroundColor = ""
@@ -690,7 +703,7 @@ function renderTurn() {
 
     if (game.turn === "enemy") {
         document.querySelector("#turnMessage").style.color = "#dc4d01"
-        document.querySelector("#turnMessage").innerText = "Enemy is launching an attack"
+        document.querySelector("#turnMessage").innerText = `Enemy is launching an attack on ${username}'s waters` 
         timer = setInterval(turnTimer,350)
     }
 

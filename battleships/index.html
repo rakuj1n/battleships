@@ -8,13 +8,16 @@
     <title>Battleships</title>
   </head>
   <body>
+    <div class="container">
     <section id="startscreen">
       <h1>Battleships</h1>
       <p>Game overview goes in here.</p>
       <label for="username">Enter your username: <input id="username"></label>
       <label for="start"><button id="startbutton">Start</button></label>
-  </section>
+    </section>
+    </div>
 
+  <div class="container">
   <section id="playersetup">
       <h1>Set up your battleships!</h1>
       <div class="grid gridsetup" id="gridsetup"></div>
@@ -33,7 +36,9 @@
       <label for="reset"><button id="resetButton">Reset deployment</button></label>
       <label for="toGame"><button id="deployButton">Deploy for sortie!</button></label>
   </section>
+  </div>
 
+  <div class="container">
   <section id="game">
       <h1 id="winMessage"></h1>
       <h1 id="turnMessage">Your Turn</h1>
@@ -45,6 +50,7 @@
       <br/>
       <button id="playAgainButton">Play Again!</button>
   </section>
+  </div>
     <script type="module" src="main.js"></script>
   </body>
 </html>

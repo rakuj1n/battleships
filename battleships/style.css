@@ -7,20 +7,9 @@ body {
   align-items: center;
 }
 
-#startscreen {
+.container {
   width: min(65ch,100% - 4rem);
-  justify-content: center;
-  align-items: center;
-}
-
-#playersetup {
-  width: min(65ch,100% - 4rem);
-  justify-content: center;
-  align-items: center;
-}
-
-#game {
-  width: min(65ch,100% - 4rem);
+  /* display: flex; */
   justify-content: center;
   align-items: center;
 }
@@ -31,23 +20,11 @@ body {
   grid-template-rows: repeat(10,1fr);
   column-gap: 1px;
   row-gap: 1px;
-  max-width: 350px;
+  max-width: 391px;
+  max-height: 391px;
 }
 
-.gridenemy > div {
-  border: 2px solid;
-  height: 35px;
-  width: 35px;
-
-}
-
-.gridplayer > div {
-  border: 2px solid;
-  height: 35px;
-  width: 35px;
-}
-
-.gridsetup > div {
+.gridenemy > div, .gridplayer > div, .gridsetup > div {
   border: 2px solid;
   height: 35px;
   width: 35px;
@@ -76,9 +53,6 @@ body {
   filter: brightness(0.8); 
 }
 
-#gridsetup > #errorMessage {
-  max-width: 350px;
-}
 
 #game>h1 {
   color: #7C989F;
@@ -87,4 +61,8 @@ body {
 
 #errorMessage {
   color: red
+}
+
+#turnMessage {
+  height: 70px;
 }
