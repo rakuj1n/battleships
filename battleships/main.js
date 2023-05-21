@@ -16,7 +16,7 @@ let SHIP_VALUES = {
  
 let CELL_INDICATOR = {
     //null
-    "0": "#FFFFFF",
+    "0": "#DDE6ED",
     //player ships
     "2": "#EFECCA",
     "3.5": "#A9CBB7",
@@ -24,7 +24,7 @@ let CELL_INDICATOR = {
     "4": "#FF934F",
     "5": "#5E565A",
     //enemy misses
-    "10": "#D4FAFA",
+    "10": "#9DB2BF",
     //player got hit
     "12": "#FF0000",
     "13.5": "#FF0000",
@@ -32,13 +32,13 @@ let CELL_INDICATOR = {
     "14": "#FF0000",
     "15": "#FF0000",
     //enemy ships (hidden)
-    "-2": "#FFFFFF",
-    "-3.5": "#FFFFFF",
-    "-3": "#FFFFFF",
-    "-4": "#FFFFFF",
-    "-5": "#FFFFFF",
+    "-2": "#DDE6ED",
+    "-3.5": "#DDE6ED",
+    "-3": "#DDE6ED",
+    "-4": "#DDE6ED",
+    "-5": "#DDE6ED",
     //player misses
-    "-10": "#D4FAFA",
+    "-10": "#9DB2BF",
     //enemy got hit
     "-12": "#FF0000",
     "-13.5": "#FF0000",
@@ -249,14 +249,14 @@ function handlePlayAgain() {
 }
 
 function changeBorderColorWhenHit(newColor,row,col) {
-    let originalColor = "#000000"
+    let originalColor = ""
     let allGrids = document.querySelectorAll("#gridplayer>div")
-    for (let x of allGrids) {
-        x.style.borderColor = newColor
-    }
+    // for (let x of allGrids) {
+    //     x.style.borderColor = newColor
+    // }
     console.log(document.querySelector(`#r${row}c${col}`))
     // document.querySelector(`#gridplayer>#r${row}c${col}`).style.borderStyle = "dashed"
-    document.querySelector(`#gridplayer>#r${row}c${col}`).style.boxShadow = "0px 0px 0px 2px inset"
+    document.querySelector(`#gridplayer>#r${row}c${col}`).style.boxShadow = "0px 0px 0px 2px #27374D inset"
 
     setTimeout(function() {
         for (let x of allGrids) {
@@ -662,12 +662,12 @@ function rendersetupCurrSelectedShip() {
     setupCruiserButton.classList.add("hide")
     setupBattleshipButton.classList.add("hide")
     setupCarrierButton.classList.add("hide")
-    
-    if (setupCurrSelectedShip === "destroyer") {setupDestroyerButton.style.backgroundColor = "#FDFD96"}
-    if (setupCurrSelectedShip === "submarine") {setupSubmarineButton.style.backgroundColor = "#FDFD96"}
-    if (setupCurrSelectedShip === "cruiser") {setupCruiserButton.style.backgroundColor = "#FDFD96"}
-    if (setupCurrSelectedShip === "battleship") {setupBattleshipButton.style.backgroundColor = "#FDFD96"}
-    if (setupCurrSelectedShip === "carrier") {setupCarrierButton.style.backgroundColor = "#FDFD96"}
+    let color = "#526D82"
+    if (setupCurrSelectedShip === "destroyer") {setupDestroyerButton.style.backgroundColor = color}
+    if (setupCurrSelectedShip === "submarine") {setupSubmarineButton.style.backgroundColor = color}
+    if (setupCurrSelectedShip === "cruiser") {setupCruiserButton.style.backgroundColor = color}
+    if (setupCurrSelectedShip === "battleship") {setupBattleshipButton.style.backgroundColor = color}
+    if (setupCurrSelectedShip === "carrier") {setupCarrierButton.style.backgroundColor = color}
     
     //remove hide if exist in array
     if (availableShipTypesToPlace.includes("destroyer")) {setupDestroyerButton.classList.remove("hide")}
