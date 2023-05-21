@@ -38,6 +38,7 @@ button:hover {
 
 #login {
   text-align: center;
+  margin: 5% 0;
 }
 
 #setupOptions {
@@ -133,6 +134,12 @@ button:hover {
 
 #startscreen > h1 {
   text-align: center;
+}
+
+#startscreen > h1 {
+  font-family: 'Rubik', sans-serif;
+  font-size: 3.5rem;
+  margin: 5% 0%;
 }
 
 
