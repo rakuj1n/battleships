@@ -477,7 +477,7 @@ function handleSetupReset() {
 
 function handleToSetup() {
     username = usernameField.value
-    document.querySelector("#game>#yourwaters").innerText = `${username}'s waters`
+    document.querySelector("#yourwaters").innerText = `${username}'s waters`
     game.screen = "setupscreen"
     render()
 }
