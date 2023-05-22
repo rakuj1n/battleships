@@ -16,18 +16,12 @@ Whoever sinks all of their opponent's ships first will be the winner.
 # Screenshot(s)
 Images of your actual game
 
-<br/>
-Early Development:
-<br/>
-Getting ai to place ships randomly
-<br/>
-<img src="\battleships\battleships\images\aiplacingshipsgif.gif">
-
 # Technologies Used
 HTML, CSS and Javascript
 
 # Getting Started
-In this section include the link to your deployed game and any instructions you deem important.
+Visit https://battleships-iota.vercel.app/ and start playing straight away!
 
 # Next Steps
-Planned future enhancements (icebox items).
+Expandable board
+Better AI (Easy, Medium, Hard, Insane etc.)
