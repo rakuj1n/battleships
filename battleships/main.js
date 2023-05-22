@@ -651,6 +651,7 @@ function render() {
   renderPlayAgainButton()
   renderWinMessage()
   renderOrientaion()
+  renderDeployLightUp()
 }
 
 function renderScreen() {
@@ -779,6 +780,16 @@ function renderWinMessage() {
     if (game.winner === "player") {
         winMessage.style.color = ""
         winMessage.innerText = `${username} has sunk all of the enemy ships and emerges victorious!`
+    }
+}
+
+function renderDeployLightUp() {
+    document.querySelector("#deployButton").style.backgroundColor = ""
+    document.querySelector("#deployButton").style.color = ""
+
+    if (availableShipTypesToPlace.length === 0) {
+        document.querySelector("#deployButton").style.backgroundColor = "#FDFD96"
+        document.querySelector("#deployButton").style.color = "#27374D"
     }
 }
 
