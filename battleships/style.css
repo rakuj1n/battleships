@@ -143,4 +143,33 @@ button:hover {
 }
 
 
+@media (max-height: 1200px) {
+  
+#containergamesection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+aside {
+  margin: 5px;
+}
+
+#turnMessage {
+  text-align: center;
+  margin-left:25%;
+}
+
+#winMessage {
+  text-align: center;
+  margin-left:25%;
+}
+
+
+
+
+
+}
+
+
 
