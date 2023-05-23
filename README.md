@@ -14,10 +14,10 @@ A hit or miss will be registered on each other's board as you play.
 Whoever sinks all of their opponent's ships first will be the winner.
 
 # Screenshot(s)
-![Start](images/Startscreen.png)
-![Setup](images/Setup.png)
-![Game](images/Gamescreen.png)
-![Screenshot of game in progress](images/aiplacingshipsgif.gif)
+![Start](battleships/images/Startscreen.png)
+![Setup](battleships/images/Setup.png)
+![Game](battleships/images//Gamescreen.png)
+![Screenshot of game in progress](battleships/images/aiplacingshipsgif.gif)
 
 
 # Technologies Used
