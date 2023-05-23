@@ -14,7 +14,7 @@ A hit or miss will be registered on each other's board as you play.
 Whoever sinks all of their opponent's ships first will be the winner.
 
 # Screenshot(s)
-Images of your actual game
+![Screenshot of game in progress](images/aiplacingshipsgif.gif)
 
 # Technologies Used
 HTML, CSS and Javascript
