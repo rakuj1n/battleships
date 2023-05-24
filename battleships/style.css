@@ -95,6 +95,10 @@ button:hover {
   width: 391px;
 }
 
+#shipsToBeDeployed >div:hover {
+  background-color: #526D82; 
+}
+
 .gridsetup > div:hover {
   filter: brightness(0.8); 
   }
