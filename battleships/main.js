@@ -249,17 +249,8 @@ function handlePlayAgain() {
 }
 
 function changeBorderColorWhenHitEnemy(row,col) {
-    // let allGrids = document.querySelectorAll("#gridplayer>div")
-    // for (let x of allGrids) {
-    //     x.style.borderColor = newColor
-    // }
-    // document.querySelector(`#gridplayer>#r${row}c${col}`).style.borderStyle = "dashed"
     document.querySelector("#enemywaters").style.color = "#FF0000"
-
     setTimeout(function() {
-        // for (let x of allGrids) {
-        //     x.style.borderColor = originalColor
-        // }
         document.querySelector("#enemywaters").style.color = ""
     },700)
 }
@@ -267,17 +258,10 @@ function changeBorderColorWhenHitEnemy(row,col) {
 function changeBorderColorWhenHit(row,col) {
     let originalColor = ""
     let allGrids = document.querySelectorAll("#gridplayer>div")
-    // for (let x of allGrids) {
-    //     x.style.borderColor = newColor
-    // }
-    // document.querySelector(`#gridplayer>#r${row}c${col}`).style.borderStyle = "dashed"
     document.querySelector(`#gridplayer>#r${row}c${col}`).style.boxShadow = "0px 0px 0px 2px #27374D inset"
     document.querySelector("#yourwaters").style.color = "#FF0000"
 
     setTimeout(function() {
-        // for (let x of allGrids) {
-        //     x.style.borderColor = originalColor
-        // }
         document.querySelector(`#gridplayer>#r${row}c${col}`).style.boxShadow = ""
         document.querySelector("#yourwaters").style.color = ""
     },700)
@@ -286,16 +270,9 @@ function changeBorderColorWhenHit(row,col) {
 function changeBorderColorWhenMiss(row,col) {
     let originalColor = ""
     let allGrids = document.querySelectorAll("#gridplayer>div")
-    // for (let x of allGrids) {
-    //     x.style.borderColor = newColor
-    // }
-    // document.querySelector(`#gridplayer>#r${row}c${col}`).style.borderStyle = "dashed"
     document.querySelector(`#gridplayer>#r${row}c${col}`).style.boxShadow = "0px 0px 0px 2px #27374D inset"
 
     setTimeout(function() {
-        // for (let x of allGrids) {
-        //     x.style.borderColor = originalColor
-        // }
         document.querySelector(`#gridplayer>#r${row}c${col}`).style.boxShadow = ""
     },700)
 }
@@ -337,7 +314,7 @@ function aiAttack() {
     let currRowIdx = aiDetermineAttackTileResult[0]
     let currColIdx = aiDetermineAttackTileResult[1]
     
-    if (game.playerBoard[currRowIdx][currColIdx] === undefined) {return aiAttack()} // check this again when ai is done
+    if (game.playerBoard[currRowIdx][currColIdx] === undefined) {return aiAttack()}
     if (game.playerBoard[currRowIdx][currColIdx] === 10) {return aiAttack()}
     if (game.playerBoard[currRowIdx][currColIdx] === 12) {return aiAttack()}
     if (game.playerBoard[currRowIdx][currColIdx] === 13) {return aiAttack()}
@@ -405,17 +382,8 @@ function aiDetermineAttackTile() { //this function should return ONLY the attack
             console.log(`enemy does attack pattern at ${enemyZoningAttackPattern[rdmAttackIdx][0]},${enemyZoningAttackPattern[rdmAttackIdx][1]}`)
             return [enemyZoningAttackPattern[rdmAttackIdx][0],enemyZoningAttackPattern[rdmAttackIdx][1]]
         } else {
-        // else (for all hits, all adjacent tiles have been attacked) return aiDetermineAttackTile()
-            console.log("enemy does random (2/3) after attack pattern tiles are all attacked")        
-            // let remainingPlayer = [...player.destroyer,...player.submarine,...player.cruiser,...player.battleship,...player.carrier]
-            // let oddsResult = Math.floor(Math.random() * 3) + 1
-            // if (oddsResult === 1) {
-            //     console.log("ai got 1/3")
-            //     let randomIdx1 = Math.floor(Math.random() * remainingPlayer.length)
-            //     return [remainingPlayer[randomIdx1][0],remainingPlayer[randomIdx1][1]]
-            // } else 
+            console.log("enemy does random after attack pattern tiles are all attacked")        
             return [parseInt(Math.floor(Math.random() * 10)),parseInt(Math.floor(Math.random() * 10))]
-        // }
         }        
     } else {
     // else default attack is random 
@@ -684,15 +652,6 @@ function renderBoard(board) { // "player"
     }
 }
 
-// function changeTileColorWhenHit(newColor,row,col) {
-//     let originalColor = "#D4FAFA"
-//     document.querySelector(`#r${row}c${col}`).style.backgroundColor = newColor
-
-//     setTimeout(function() {
-//         document.querySelector(`#r${row}c${col}`).style.backgroundColor = originalColor
-//     },700)
-// }
-
 function rendersetupCurrSelectedShip() {
     setupDestroyerButton.style.backgroundColor = ""
     setupSubmarineButton.style.backgroundColor = ""
@@ -729,10 +688,6 @@ function renderOrientaion() {
 function renderErrorMsg() {
     setupErrorMessageField.innerText = ""
     setupErrorMessageField.innerText = setupErrorMessage
-//     setTimeout(()=>{
-//         setupErrorMessage=""
-//         setupErrorMessageField.innerText = setupErrorMessage
-// },5000)
 }
 
 let timer;
@@ -832,8 +787,6 @@ function removePlacementLens(e) {
     }}
 }
 
-// when refactoring after project finish: make a createboard function with arguments 
-// "appendlocation" and place in init() and remove the boards in html
 
 init()
 
