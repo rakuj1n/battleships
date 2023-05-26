@@ -348,6 +348,7 @@ function aiDetermineAttackTile() { //this function should return ONLY the attack
     // check attacklog if there is "hit" && enemyZoningAttackPattern.length > 0
     if (Object.values(enemyAttackLog).some((x)=>x==="hit")) {
         // empty out enemyZoningAttackPattern
+        enemyZoningAttackPattern = []
         // push 4 adjacent tile coords of all hits into enemyZoningAttackPattern e.g. [5][5] -> [4,5][6,5][5,4][5,6] https://stackoverflow.com/questions/25095789/return-an-object-key-only-if-value-is-true
         let keys = Object.keys(enemyAttackLog)
         let hitFilter = keys.filter((key)=>{    //stores array of keys that are hits
